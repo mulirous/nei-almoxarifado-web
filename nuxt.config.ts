@@ -4,15 +4,18 @@ import { devtools } from "vue";
 export default defineNuxtConfig({
   devtools: { enabled: false },
   alias: {"@": "/<rootDir>"},
+
   css: [
     'bootstrap/dist/css/bootstrap.min.css',
     '~/assets/scss/styles.scss',
   ],
+
   modules: [
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/google-fonts'
   ],
+
   app: {
     head: {
       link: [ 
@@ -25,6 +28,7 @@ export default defineNuxtConfig({
       ]
     }
   },
+
   googleFonts: {
     families: {
       Inter: [400, 500, 600, 700, 800],
@@ -37,5 +41,7 @@ export default defineNuxtConfig({
     preconnect: true, 
     preload: true, 
     download: false, 
-  }
+  },
+
+  compatibilityDate: '2024-09-18'
 })

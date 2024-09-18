@@ -4,7 +4,6 @@ FROM node:20.15.0 AS build
 # Diretório de trabalho
 WORKDIR /opt/nei-almoxarifado-web
 
-# Copia os arquivos necessários para instalar as dependências
 COPY package*.json ./
 
 # Instala dependências

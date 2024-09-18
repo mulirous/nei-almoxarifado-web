@@ -13,23 +13,27 @@
             </div>	
 				</div>
 				<div class="modal-body">
-            <ul v-if="showResults && searchQuery !== '' && searchResults.length != 0" class="list-group">
-                <li v-for="result in searchResults" :key="result.id" @click="NavigateToItem(result.id)" class="searchResult list-group-item list-group-item-action d-flex justify-content-between align-items-center" tabindex="0"> 
-                  {{ result.name }} 
-                  <span class="badge bg-primary rounded-pill" v-if="result"> {{ result.quantity }} </span>
-                </li>
-              </ul>
-              <div class="d-flex justify-content-center align-items-center py-3" v-else-if="!showResults && searchQuery !== ''">
-              <LoadersComponentLoading :isLoading="true" />
-            </div>
-            <p class="d-flex justify-content-center align-items-center pt-3" v-else-if=" searchQuery !== '' && searchResults.length === 0">
-            Nenhum Resultado Encontrado
-            </p>
+          <ul v-if="showResults && searchQuery !== '' && searchResults.length != 0" class="list-group">
+              <li v-for="result in searchResults" :key="result.id" @click="NavigateToItem(result)" class="searchResult list-group-item list-group-item-action d-flex justify-content-between align-items-center" tabindex="0"> 
+                {{ result.name }} 
+                <span class="badge bg-primary rounded-pill" v-if="result"> {{ result.quantity }} </span>
+              </li>
+          </ul>
+          <div class="d-flex justify-content-center align-items-center py-3" v-else-if="!showResults && searchQuery !== ''">
+            <LoadersComponentLoading :isLoading="true" />
+          </div>
+          <p class="d-flex justify-content-center align-items-center pt-3" v-else-if=" searchQuery !== '' && searchResults.length === 0">
+          Nenhum Resultado Encontrado
+          </p>
             
             <ul v-if="searchQuery.length === 0 && searchStore.recentSearch.length  > 0" class="list-group">
+              <p class="m-0 pb-1 text-secondary fw-bold">Recentes</p>
               <a class="text-decoration-none" v-for="result in searchStore.recentSearch" :key="result.id">
-                <li @click="NavigateToItem(result.id)" class="searchResult list-group-item list-group-item-action d-flex justify-content-between align-items-center" tabindex="0"> 
-                  {{ result.name }} 
+                <li @click="NavigateToItem(result)" class="searchResult list-group-item list-group-item-action d-flex justify-content-between align-items-center" tabindex="0"> 
+                  <span class="d-flex align-items-start">
+                    <IconsHistory class="me-2" width="25px" height="25px"/>
+                    {{ result.name }}
+                  </span>
                   <span class="badge bg-primary rounded-pill" v-if="result"> {{ result.quantity }} </span>
                 </li>
               </a>
@@ -71,18 +75,12 @@ export default {
     };
   },
   methods: {
-    NavigateToItem(id) {
-      this.searchStore.itemSearch = { searching: true, itemId: id }
-      let selectedItem;
+    NavigateToItem(searchItem) {
+      this.searchStore.itemSearch = { searching: true, itemId: searchItem.id }
 
-      if (this.searchResults.length > 0) {
-          selectedItem = this.searchResults.find(item => item.id === id);
-      } else {
-        selectedItem = this.searchStore.recentSearch.find(item => item.id === id);
-      }
+      this.addItemToRecentSearch(searchItem);
 
-      this.addItemToRecentSearch(selectedItem);
-      navigateTo('/nei/catalogo')
+      navigateTo('/nei/catalogo');
     },
     SearchDown() {
       let searchResult = document.getElementsByClassName("searchResult");

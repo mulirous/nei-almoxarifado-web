@@ -88,8 +88,8 @@
     </div>
     <div v-else-if="!showSearchResults && !emptyRecords" class="d-flex justify-content-center align-items-center my-5">
             <LoadersComponentLoading :isLoading="true" class="p-5 my-5"/>
-    </div>
-    <div v-else-if="(showSearchResults && finded.length === 0) || (!initialLoading && totalPages === 0 && itemsCache.length === 0 && !showSearchResults)" 
+        </div>
+        <div v-else-if="(showSearchResults && finded.length === 0) || (!initialLoading && totalPages === 0 && recordsCache.length === 0 && !showSearchResults)" 
             class="search-empty my-5">
             <p class="text-dark-emphasis fs-3 opacity-75 bg-transparent p-5">Nenhum Registro Encontrado</p>
         </div> 
