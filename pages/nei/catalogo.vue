@@ -391,7 +391,8 @@ const showConfirm = (index) => {
     store.itemDetails = itemsCache.value[cacheIndex.value][itemIndex.value];
 }
 const showSearchModal = ref(false);
-const searchItem = ref(undefined)
+const searchItem = ref(undefined);
+
 const showSearchingDetails = async (itemId) => {
     const res = await getItem(userStore, itemId);
     searchItem.value = res;

@@ -5,7 +5,8 @@ export const useSearch = defineStore('search', {
         itemSearch: {
             searching: false,
             itemId: 0 
-        } 
+        },
+        recentSearch: []
     }),
     persist: {
         storage: persistedState.cookiesWithOptions({
