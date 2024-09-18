@@ -6,7 +6,7 @@
 			<Meta name="perfil" content="Página sobre as informações do usuário"/>
 		</Head>
 	</div>
-    <div class="profile-container">
+    <div class="profile-container" :class="{'d-flex': userData.role === 'USER'}">
       <div class="profile-sidebar bg-light rounded-3  flex-column align-items-center">
         <div class="d-flex justify-content-center mb-4 bg-light-background-header history-title">
             <h5 class="text-center mt-2 fw-bold">Informações do perfil</h5>
@@ -70,22 +70,22 @@
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-center justify-content-center">
                     {{ request.item.type || 'Tipo não disponível' }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-center justify-content-center">
                     {{ request.item.sipacCode ? request.item.sipacCode : 'nenhum' }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-center justify-content-center">
                     {{ request.quantityRequested }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-center justify-content-center">
                     {{ request.creationDate.slice(0, 19) }}
                   </div>
                 </th>
@@ -259,11 +259,11 @@
     <p class="ms-2 pt-2 fw-bold posts-loader">{{reqsTotalElements.canceledRequests}} Solicitações</p>
     </div>
   </div>
-  <div v-if="userRecords.length > 0" class="overflow-x-scroll profile-posts bg-light mb-4 mt-0 pb-0 pt-0 rounded-3">
+  <div class="overflow-x-scroll profile-posts bg-light mb-4 mt-0 pb-0 pt-0 rounded-3">
       <div class="history-title pt-2 bg-light-background-header">
         <h5 class="ms-3 fw-bold">Histórico de Movimentações</h5>
       </div>
-      <div class="posts-table" id="recordsTable">
+      <div v-if="userRecords.length > 0" class="posts-table" id="recordsTable">
         <TablesTable>
           <template v-slot:header>
             <tr class="bg-light">
@@ -276,7 +276,7 @@
             </tr>
           </template>
           <template v-slot:content>
-            <tr v-if="userRecords.length > 0" v-for="post in userRecords" :key="post.id" class="text-center"> 
+            <tr v-for="post in userRecords" :key="post.id" class="text-center"> 
               <th class="table-cell mov-cell" scope="row">
                 <div class="d-flex table-text align-items-center justify-content-center" style="padding-top: 0px;">
                   {{ post.item.name || 'Nome não disponível' }}
@@ -308,14 +308,15 @@
                 </div>
               </th>
             </tr>
-            <tr v-else>
-              <td colspan="5" class="text-center text-center fw-bold text-dark-emphasis py-5 mt-5">Nenhuma solicitação encontrado</td>
-            </tr>
-            </template>
-          </TablesTable>
+          </template>
+        </TablesTable>
       </div>
+      <div v-else
+          class="search-empty my-5">
+          <p class="text-dark-emphasis fs-4 opacity-75 bg-transparent p-3">Nenhum Registro Encontrado</p>
+      </div> 
       <p class="ms-2 pt-2 fw-bold posts-loader">{{recordsTotalElements}} Registros</p>
-      </div>
+    </div>
   </div>
 </div>
 
@@ -585,7 +586,7 @@ onMounted(async () => {
     }
   });
   
-  if(userStore.role === 'ADMIN'){
+  if(userStore.role === 'ADMIN' && userRecords.value.length > 0){
     const postsTable = document.getElementById('recordsTable');
     postsTable.addEventListener('scroll', async () => {
       if(userRecords.value.length < recordsTotalElements.value){
@@ -621,6 +622,12 @@ h3{
 .profile-main-content {
   flex: 3;
   margin-top: 0px !important;
+}
+.search-empty{
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    white-space: nowrap;
 }
 .profile-header {
   margin-bottom: 20px;

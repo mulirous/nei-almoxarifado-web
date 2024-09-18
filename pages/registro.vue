@@ -54,7 +54,7 @@
                 </tr>
             </template>
             <template v-slot:content>
-            <tr v-if="recordsCache.length > 0" v-for="(record, index) in recordsCache[cacheIndex]" :key="index" :data-index="index">
+            <tr v-for="(record, index) in recordsCache[cacheIndex]" :key="index" :data-index="index">
                <th class="border">
                    <span>{{ record.item.name }}</span>
                </th>
