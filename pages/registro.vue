@@ -603,7 +603,6 @@ tr:hover p{
         justify-content: center;
         align-content: center;
     }
-
     .pages-info{
         text-wrap: wrap;
         text-align: center;
@@ -625,7 +624,7 @@ tr:hover p{
     }
     .table-searchbar{
         min-width: 120px;
-        margin-top: 8px !important; 
+        margin-top: 4px !important; 
         display: block;
     }
 }
@@ -648,6 +647,9 @@ tr:hover p{
         font-size: 10px;
         padding: 7px 4px 7px 4px !important;
     }
+    .sub-catalog{
+        margin: 15px;
+    }
 } 
 @media screen and (max-width: 500px){
     .box-title-text{
@@ -658,7 +660,7 @@ tr:hover p{
     }
     .table-actions{
         padding-right: 0px !important;
-        display: block !important;
+        display: flex !important;
     }.actions-btns{
         padding-bottom: 9px;
         border-radius: 0px 10px 0px 0px;

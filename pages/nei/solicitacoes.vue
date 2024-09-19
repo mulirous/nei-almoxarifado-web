@@ -113,7 +113,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center cards-box">
+                        <div class="d-flex align-items-center cards-box me-0">
                             <div :class="{'d-flex': changeView, 'd-block': !changeView, 'width-adjust': changeView}">
                                     <CardsCard :class="{'card-width-adjust': changeView}" 
                                     v-if="requestsCache.inProgressRequests.length > 0" 
@@ -245,7 +245,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center cards-box">
+                        <div class="d-flex align-items-center cards-box me-0">
                             <div :class="{'d-flex': changeView, 'd-block': !changeView, 'width-adjust': changeView}" class="requests-view">
                                 <CardsCard :class="{'card-width-adjust': changeView}" 
                                 v-if="requestsCache.acceptedRequests.length > 0"
@@ -404,7 +404,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center cards-box">
+                        <div class="d-flex align-items-center cards-box me-0">
                             <div :class="{'d-flex': changeView, 'd-block': !changeView, 'width-adjust': changeView}" class="requests-view">
                                 <CardsCard :class="{'card-width-adjust': changeView}" v-if="requestsCache.rejectedRequests.length > 0" 
                                     v-for="(request, index) in requestsCache.rejectedRequests.slice(0, requestsLoaded[2])" :key="index" 

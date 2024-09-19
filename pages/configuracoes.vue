@@ -211,13 +211,13 @@
     </section>-->
     <section class="settings-section mb-5">
         <div class="section-title border-bottom border-dark-emphasis d-flex align-items-center justify-content-between">
-            <h3 class="mx-2">Configurar Tipos e Categorias</h3>
+            <h3 class="mx-2 mb-1">Configurar Tipos e Categorias</h3>
             <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#categoryRegister">Adicionar</button>
         </div>
         <p class="fs-6 mx-2">Escolha um dos temas visuais abaixos para que a estilização do aplicativo esteja de acordo com suas preferências estéticas. O tema escolhido ficará salvo como preferências do usuário, ao sair da aplicação o tema continuará salvo.  </p>
         <div class="section-content row d-flex justify-content-center ">
             <div class="d-flex categories" style="width: 230px;" v-for="(category, index) in settingsStore.categories" :key="index">
-                <div class="bg-light my-3 d-flex align-items-center text-wrap me-3 rounded-2">
+                <div class="bg-light my-3 d-flex align-items-center text-wrap rounded-2">
                     <input readonly class="form-control border-0" type="text" :placeholder="category" />
                     <IconsDelete class="trash me-2" @click="removeItemCategory(index)" width="27" height="27"/>
                 </div>
@@ -406,6 +406,9 @@ section {
     }
     .section-title{
         text-align: center;
+    }
+    .section-title h3{
+        font-size: 19px;
     }
     .categories{
         width: 180px !important; 

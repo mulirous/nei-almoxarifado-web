@@ -70,7 +70,6 @@ if(res.totalPages > 1){
 }
 
 provide('setSolicitations', async () => {
-	console.log("WHATAFICL")
 	solicitations.value = []
 	const res = await getRequestByStatus(userStore, 'pendente');
 	res.content.map((request) => {
@@ -92,6 +91,7 @@ provide('setSolicitations', async () => {
 	width: 50vw;
 }
 .container{
+	margin-bottom: 50px;
 	width: 100%;
 }
 .warning-text{

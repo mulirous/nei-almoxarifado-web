@@ -114,8 +114,8 @@
             </template>
           </TablesTable>
         </div>
-        <div v-if="loadContent && users.content.length === 0" class="search-empty d-flex justify-content-center align-items-center text-center">
-          <p class="text-dark-emphasis fs-5 fw-bold p-5">Nenhum usuário encontrado</p>
+        <div v-if="loadContent && users.content.length === 0" class="d-flex justify-content-center mb-5">
+          <p class="fw-bold fs-5 opacity-75 py-5 my-5">Nenhum dado encontrado</p>
         </div>
         <div v-if="!loadContent"class="d-flex justify-content-center">
           <LoadersLoading class="p-5 m-5" style="margin-top: 30px;"/>
@@ -186,8 +186,8 @@
           </template>
         </TablesTable>
       </div>
-      <div v-if="loadContent && records.content.length === 0" class="search-empty d-flex justify-content-center">
-        <p class="text-dark-emphasis fs-5 opacity-50">Nenhuma movimentação</p>
+      <div v-if="loadContent && records.content.length === 0" class="d-flex justify-content-center mb-5">
+        <p class="fw-bold fs-5 opacity-75 py-5 my-5">Nenhuma movimentação encontrada</p>
       </div>
       <div class="d-flex justify-content-center mt-5" v-else>
         <LoadersLoading class="p-5 mt-4"/>
@@ -301,10 +301,9 @@ const fetchUsers = async () => {
           if (res.content[j].id == userStore.id) {
             res.content[j].name = "Eu";
           }
-          if(res.content[j].active === false && showDisabledAccounts.value === false){
-            break;
+          if(res.content[j].active === true || (res.content[j].active === false && showDisabledAccounts.value === true)){
+            users.value.content.push(res.content[j]);
           }
-          users.value.content.push(res.content[j]);
         }
         res = await getUsers(userStore, i);
     }

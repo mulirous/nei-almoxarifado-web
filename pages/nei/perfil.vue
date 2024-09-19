@@ -52,27 +52,27 @@
             <template v-slot:content>
               <tr v-if="pendingRequests.length > 0" v-for="request in pendingRequests" :key="request.id" class="text-center"> 
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-center justify-content-center" style="padding-top: 0px;">
+                  <div class="d-flex table-text align-items-center justify-content-center" >
                     {{ request.item.name || 'Nome não disponível' }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-end justify-content-center">
                     {{ request.item.type || 'Tipo não disponível' }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text table-text align-items-end justify-content-center">
                     {{ request.item.sipacCode ? request.item.sipacCode : 'nenhum' }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-end  justify-content-center">
                     {{ request.quantityRequested }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-end text-nowrap justify-content-center">
                     {{ request.creationDate.slice(0, 19) }}
                   </div>
                 </th>
@@ -105,27 +105,27 @@
             <template v-slot:content>
               <tr v-if="acceptedRequests.length > 0" v-for="request in acceptedRequests" :key="request.id" class="text-center"> 
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-center justify-content-center" style="padding-top: 0px;">
+                  <div class="d-flex table-text align-items-center justify-content-center">
                     {{ request.item.name || 'Nome não disponível' }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-end justify-content-center">
                     {{ request.item.type || 'Tipo não disponível' }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text table-text align-items-end justify-content-center">
                     {{ request.item.sipacCode ? request.item.sipacCode : 'nenhum' }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-end justify-content-center">
                     {{ request.quantityRequested }}
                   </div>
                 </th>
                 <th class="table-cell mov-cell" scope="row">
-                  <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                  <div class="d-flex table-text align-items-end text-nowrap justify-content-center">
                     {{ request.creationDate.slice(0, 19) }}
                   </div>
                 </th>
@@ -161,27 +161,27 @@
         <template v-slot:content>
           <tr v-if="rejectedRequests.length > 0" v-for="request in rejectedRequests" :key="request.id" class="text-center"> 
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text align-items-center justify-content-center" style="padding-top: 0px;">
+              <div class="d-flex table-text align-items-center text-nowrap justify-content-center" style="padding-top: 0px;">
                 {{ request.item.name || 'Nome não disponível' }}
               </div>
             </th>
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+              <div class="d-flex table-text align-items-end justify-content-center">
                 {{ request.item.type || 'Tipo não disponível' }}
               </div>
             </th>
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text table-text align-items-end mt-1 justify-content-center">
+              <div class="d-flex table-text table-text align-items-end justify-content-center">
                 {{ request.item.sipacCode ? request.item.sipacCode : 'nenhum' }}
               </div>
             </th>
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+              <div class="d-flex table-text align-items-end justify-content-center">
                 {{ request.quantityRequested }}
               </div>
             </th>
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+              <div class="d-flex table-text align-items-end text-nowrap justify-content-center">
                 {{ request.creationDate.slice(0, 19) }}
               </div>
             </th>
@@ -212,27 +212,27 @@
         <template v-slot:content>
           <tr v-if="canceledRequests.length > 0" v-for="request in canceledRequests" :key="request.id" class="text-center"> 
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text align-items-center justify-content-center" style="padding-top: 0px;">
+              <div class="d-flex table-text align-items-center text-nowrap justify-content-center">
                 {{ request.item.name || 'Nome não disponível' }}
               </div>
             </th>
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+              <div class="d-flex table-text align-items-end justify-content-center">
                 {{ request.item.type || 'Tipo não disponível' }}
               </div>
             </th>
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text table-text align-items-end mt-1 justify-content-center">
+              <div class="d-flex table-text table-text align-items-end justify-content-center">
                 {{ request.item.sipacCode ? request.item.sipacCode : 'nenhum' }}
               </div>
             </th>
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+              <div class="d-flex table-text align-items-end justify-content-center">
                 {{ request.quantityRequested }}
               </div>
             </th>
             <th class="table-cell mov-cell" scope="row">
-              <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+              <div class="d-flex table-text align-items-end text-nowrap justify-content-center">
                 {{ request.creationDate.slice(0, 19) }}
               </div>
             </th>

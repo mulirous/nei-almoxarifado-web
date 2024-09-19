@@ -139,6 +139,9 @@ function checkIfMobile() {
 .darkLayout .btn-dark-success{
   background-color: #238a27 !important;
 }
+.darkLayout .bg-dark-success{
+  border: 1px solid #00ff51 !important;
+}
 .darkLayout .btn-dark-alert{
   background-color: rgb(98, 17, 17) !important;
 }

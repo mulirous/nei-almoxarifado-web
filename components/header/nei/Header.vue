@@ -3,20 +3,20 @@
       <IconsMenu @click="expandSidebar()" class="d-none menu-color mx-3" :class="{'show-menu': settingsStore.isMobile}"/>
       <div class="d-flex align-items-center" :class="{'d-none': settingsStore.isMobile}">
         <Brand title="Página incial" />
-        <SearchBar :class="{'d-none': settingsStore.isMobile}"  class="pb-1"/>
-      </div> 
-      <nav v-if="!settingsStore.isMobile" class="navbar navbar-expand py-0 ps-0">
+        <nav v-if="!settingsStore.isMobile" class="navbar navbar-expand py-0 ps-0">
           <div class="container-fluid">
             <ul class="navbar-nav d-flex justify-content-center">
-                <a :class="{'navbar-active': currentRoute.fullPath === '/nei/'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/" type="button">Início</a>
-                <a :class="{'navbar-active': currentRoute.fullPath === '/nei/catalogo'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/catalogo" type="button">Catálogo</a>
-                <a :class="{'navbar-active': currentRoute.fullPath === '/nei/solicitacoes'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/solicitacoes" type="button">Solicitações</a>
-                <a :class="{'navbar-active': currentRoute.fullPath === '/nei/configuracoes'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/configuracoes" type="button">Configurações</a>
-                <a :class="{'navbar-active': currentRoute.fullPath === '/nei/sobre'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/sobre" type="button">Sobre</a>  
-            </ul>
-          </div>
-      </nav>
-      <div class="d-flex justify-content-end align-items-center pb-0">
+                  <a :class="{'navbar-active': currentRoute.fullPath === '/nei/'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/" type="button">Início</a>
+                  <a :class="{'navbar-active': currentRoute.fullPath === '/nei/catalogo'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/catalogo" type="button">Catálogo</a>
+                  <a :class="{'navbar-active': currentRoute.fullPath === '/nei/solicitacoes'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/solicitacoes" type="button">Solicitações</a>
+                  <a :class="{'navbar-active': currentRoute.fullPath === '/nei/configuracoes'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/configuracoes" type="button">Configurações</a>
+                  <a :class="{'navbar-active': currentRoute.fullPath === '/nei/sobre'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/sobre" type="button">Sobre</a>  
+              </ul>
+            </div>
+          </nav>
+        </div> 
+        <div class="d-flex justify-content-end align-items-center pb-0">
+        <SearchBar :class="{'d-none': settingsStore.isMobile}"  class="pb-1"/>
         <div :class="{'d-none': !settingsStore.isMobile}" class="d-flex align-items-center text-light me-1" type="button" tabindex="-1" data-bs-target="#neiSearchModal" data-bs-toggle="modal">
           <IconsSearchGlass class="mobile-search text-light" height="26px" style="margin-bottom: 2px;"/>
         </div>

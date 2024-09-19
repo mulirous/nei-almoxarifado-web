@@ -30,12 +30,12 @@
             </ul>
           </div>
           <div class="nav-item dropdown">
-            <button class="svg-button  d-flex bg-primary align-items-center" @click="rotate" title="Perfil" data-bs-toggle="dropdown" data-bs-offset="10,0" data-bs-auto-close="inside" aria-expanded="false">
+            <button class="svg-button  d-flex bg-primary align-items-center" @click="rotate" title="Perfil" data-bs-toggle="dropdown" data-bs-offset="0,0" data-bs-auto-close="inside" aria-expanded="false">
               <p class="profile-drop user-text text-light px-1 m-0 fw-light text-nowrap"> {{ user.username }} </p>
               <LoadersLoading class="small-loader text-light p-1"/>
                 <IconsDownArrow class="rotate-arrow" :style="{ transform: isRoted ? 'rotate(180deg)' : 'rotate(0deg)'}" width="24px" height="24px"/>
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" style="width: 190px !important;">
               <li>
                 <a class="dropdown-item py-1 ps-2 d-flex align-items-center justify-content-between" :href="`/perfil?userId=${userStore.id}`">
                 Perfil
@@ -167,7 +167,8 @@ onMounted(async () => {
     transition: box-shadow 0.4s ease, border-bottom 0.4s ease-in-out;
 }
 .user-text {
-    font-size: 20px;
+  max-width: 200px;
+  font-size: 20px;
 }
 .dropdown-item:hover .notification-text{
   font-weight: bold
@@ -186,6 +187,9 @@ p{
   filter: drop-shadow(0px 0px 8px rgba(254, 213, 30, 1));
 }
 @media screen and (max-width: 600px){
+  .user-text {
+    max-width: 165px;
+  }
   .notification-menu{
     min-width: 200px;
   }

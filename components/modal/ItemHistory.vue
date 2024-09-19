@@ -1,5 +1,5 @@
 <template>
-	<Modal id="itemHistory" tabindex="-1" aria-labelledby="scrollableModalLabel" aria-hidden="true" data-bs-backdrop="true">
+	<Modal id="itemHistory" class="px-1 pb-5" tabindex="-1" aria-labelledby="scrollableModalLabel" aria-hidden="true" data-bs-backdrop="true">
 		<template v-slot:header>
             <p class="header-title d-flex fw-bold justify-content-start align-items-center">Histórico do item</p>
             <button class="btn btn-transparent text-light close-btn" type="button" data-bs-dismiss="modal">

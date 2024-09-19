@@ -49,11 +49,11 @@
                 <ButtonsResponsiveFilter class="res-action-btn mt-1"/>
                 <ButtonsResponsiveConfigure class="res-action-btn mt-1"/>
             </div>
-                <span v-if="itemsLoad" class="position-sticky d-flex align-items-center table-searchbar" style="margin-top: 7px;">
-                    <IconsSearchGlass class="search-glass"/>
-                    <input id="tableSearch" v-model="searchInput" @input="searchInput = $event.target.value" class="searchbar bg-transparent form-control" placeholder="Pesquisar"/>          
-                </span>   
-            </div>
+            <span v-if="itemsLoad" class="position-sticky d-flex align-items-center table-searchbar" style="margin-top: 7px;">
+                <IconsSearchGlass class="search-glass"/>
+                <input id="tableSearch" v-model="searchInput" @input="searchInput = $event.target.value" class="searchbar bg-transparent form-control" placeholder="Pesquisar"/>          
+            </span>   
+        </div>
         <div v-if="itemsCache.length > 0" class="overflow-x-scroll p-0">
             <TablesTable >
                 <template v-slot:header>
@@ -631,7 +631,6 @@ tr:hover p{
         justify-content: center;
         align-content: center;
     }
-
     .pages-info{
         text-wrap: wrap;
         text-align: center;
@@ -672,13 +671,19 @@ tr:hover p{
         width: 600px;
         padding-left: 0px;
     }
+    .sub-catalog{
+        margin: 15px;
+    }
+    .table-box-title{
+        margin-top: 25px;
+    }
 } 
 @media screen and (max-width: 500px){
     .box-title-text{
         font-size: 18px;
     }
     .table-box-title{
-        margin-top: 35px;
+        margin-top: 30px;
     }
     .table-actions{
         padding-right: 0px !important;

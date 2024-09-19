@@ -46,7 +46,7 @@
             </button>
         </div>
   </div>
-  <div class="d-flex justify-content-end me-3 fw-bold mt-1 opacity-75">
+  <div class="me-3 fw-bold mt-1 opacity-75 position-absolute" style="right: 15px">
     <p>Período: {{ monthSelected === -1 ? 'anual' : `${months[monthSelected-1]}` }}</p>
   </div>
   <div>
@@ -265,6 +265,8 @@ const chartOptions = ref({
   plugins: {
     legend: {
       position: 'bottom',
+      left: 100,
+      align: 'center',
     },
   },
 });
@@ -340,7 +342,7 @@ h5{
   font-size: 13px;
 }
 .chart-graph {
-  height: 300px;
+  height: 350px;
 }
 li{
     list-style-type: none;

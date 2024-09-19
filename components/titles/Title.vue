@@ -1,19 +1,17 @@
 <template>
     <div class="page-title bg-light row d-block ms-0">
         <div class="catalog-header">
-            <div class="me-3 d-flex align-items-center justify-content-between flex-wrap">
+            <div class="me-3 d-flex align-items-end justify-content-between flex-wrap">
                 <h3 class="title-text mt-2">
-                    <LoadersLoading class="small-loader text-dark-emphasis p-1"/>
                         <slot name="titulo" />
                 </h3>
-                <nav class="title-link route" v-show="textLoading" aria-label="breadcrumb">
+                <nav class="title-link" v-show="textLoading" aria-label="breadcrumb">
                   <ol class="breadcrumb">
                     <li><a href="/">início</a></li>
                     <slot name="rota" />
                     </ol>
                 </nav>
             </div>
-            <LoadersLoading class="small-loader text-dark-emphasis p-1"/>
         </div>
     </div>
 </template>
@@ -32,9 +30,8 @@ onBeforeMount(() => {
     width: 12px;
     height: 12px;
 }
-.route{
-    position: relative;
-    top: 10px;
+.title-link{
+    height: 34px;
 }
 .route-link{
     color: rgba(51, 51, 51, 1)

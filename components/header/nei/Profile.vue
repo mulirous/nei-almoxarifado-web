@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex profile align-items-center me-3">
           <div class="me-2 nav-item dropdown">
-            <button  class="svg-button bg-primary px-0" data-bs-toggle="dropdown" data-bs-offset="20,1" aria-expanded="false" title="Notificações">
+            <button  class="svg-button bg-primary px-0" data-bs-toggle="dropdown" data-bs-offset="40,1" aria-expanded="false" title="Notificações">
               <IconsBell with="16px" height="16px"/>
               <span v-if="requests.length > 0" class="position-absolute start-100 translate-middle badge rounded-pill bg-danger">
                 {{requests.length}}
@@ -35,14 +35,14 @@
                 <li v-show="!isNotification || requests.length === 0" class="dropdown-item fs-6 text-dark-emphasis py-2" style="background-color: white;">Nenhuma notificação enviada.</li>
               </ul>
             </div>
-          <ThemeSwitch class="ms-2 mt-1"/>
+          <ThemeSwitch v-if="!settingsStore.isMobile"  class="ms-2 mt-1"/>
           <div class="nav-item dropdown">
-            <button class="svg-button  d-flex bg-primary align-items-center" @click="rotate" data-bs-toggle="dropdown" data-bs-offset="10,0" data-bs-auto-close="inside" aria-expanded="false">
+            <button class="svg-button  d-flex bg-primary align-items-center" @click="rotate" data-bs-toggle="dropdown" data-bs-offset="0,0" data-bs-auto-close="inside" aria-expanded="false">
               <p class="profile-drop user-text text-light px-1 m-0 fw-light text-nowrap"> {{ user.username }} </p>
               <LoadersLoading class="small-loader text-light p-1"/>
                 <IconsDownArrow class="rotate-arrow" :style="{ transform: isRoted ? 'rotate(180deg)' : 'rotate(0deg)'}" width="24px" height="24px"/>
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu pages-dropdown">
               <li>
                 <a class="dropdown-item py-1 ps-2 d-flex align-items-center justify-content-between" :href="`/nei/perfil?userId=${userStore.id}`">
                 Perfil 
@@ -68,11 +68,14 @@ import { getUserByEmail } from '../../../services/users/userGET';
 import { getRequestByStatus, getRequestByUser } from '../../../services/requests/requestsGET';
 import { onMounted, ref } from 'vue';
 import ThemeSwitch from '../ThemeSwitch.vue';
+import { useSettingsStore } from '../../../stores/settings';
 const toolTip = ref(false)
 
 
 const actualDate = new Date;
 const userStore = useUser();
+const settingsStore = useSettingsStore();
+
 const pagination = ref(0);
 const requests = ref([]);
 const closeNot = ref([]);
@@ -81,33 +84,6 @@ const totalPages = ref(0);
 function toPositive(number) {
   return Math.abs(number);
 }
-/* 
-let passedDate = [];
-const adjustTime = () => {
-  for (let i = 0; i < requests.value.length; i++) {
-    passedDate[i] = {};
-
-    const creationDate = new Date(requests.value[i].creationDate);
-
-    let monthDiff = toPositive(actualDate.getMonth() - creationDate.getMonth());
-    passedDate[i].month = monthDiff > 0 ? (monthDiff === 1 ? `${monthDiff} mês` : `${monthDiff} meses`) : '';
-
-    let dayDiff = toPositive(actualDate.getDate() - creationDate.getDate());
-    passedDate[i].day = dayDiff > 0 ? (dayDiff === 1 ? `${dayDiff} dia` : `${dayDiff} dias`) : '';
-
-    let hourDiff = actualDate.getHours() - creationDate.getHours();
-    let minuteDiff = actualDate.getMinutes() - creationDate.getMinutes();
-
-    if (minuteDiff < 0) {
-      minuteDiff += 60;
-      hourDiff--;   
-    }
-
-    passedDate[i].hour = `${hourDiff} hora` ;
-
-    passedDate[i].minute = minuteDiff > 0 ? (minuteDiff === 1 ? `${minuteDiff} minuto` : `${minuteDiff} minutos`) : '';
-  } 
-}*/
 
 const loadNotifications = async () => {
   const res = await getRequestByUser(userStore, userStore.id, pagination.value);
@@ -193,8 +169,8 @@ onMounted(async() => {
 }
 .notification-menu{
   max-height: 160px;
-  min-width: 300px;
   overflow-y: scroll;
+  min-width: 300px;
 }
 .small-loader{
     width: 12px;
@@ -234,10 +210,17 @@ onMounted(async() => {
     transition: box-shadow 0.4s ease, border-bottom 0.4s ease-in-out;
 }
 .user-text {
+    max-width: 170px;
     font-size: 20px;
 }
 .dropdown-item:hover .notification-text{
   font-weight: bold
+}
+.pages-dropdown{
+  width: 185px;
+}
+.pages-dropdown .dropdown-item{
+  font-size: 15px;
 }
 p{
   white-space: nowrap;     
@@ -253,11 +236,17 @@ p{
   filter: drop-shadow(0px 0px 8px rgba(254, 213, 30, 1));
 }
 @media screen and (max-width: 600px){
+  .user-text {
+    max-width: 165px;
+  }
   .notification-menu{
     min-width: 200px;
   }
   .notification-mobile{
     max-width: 100px;
+  }
+  .pages-dropdown{
+    width: 190px;
   }
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
     <div class="logo">
           <a class="navbar-brand ms-2 text-light d-flex align-items-center" href="/nei">
-            <svg width="37" height="30">
-              <image class="custom-logo" xlink:href="/logo.svg" width="35" height="30"/>
+            <svg width="37" height="37">
+              <image class="custom-logo" xlink:href="/logo.svg" width="37" height="33"/>
             </svg>
             <h5 class="fw-bold mt-2">
               NEI
