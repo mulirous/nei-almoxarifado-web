@@ -122,5 +122,8 @@ h6{
 		margin-right: 5%;
 		margin-left: 5%;
 	}
+	.extra-large{
+		width: 100vw;
+	}
 }
 </style>

@@ -6,7 +6,7 @@
 			<Meta name="perfil" content="Página sobre as informações do usuário"/>
 		</Head>
 	</div>
-    <div class="profile-container" :class="{'d-flex': userData.role === 'USER'}">
+    <div class="profile-container" :class="{'d-flex': userData.role === 'USER' && !store.isMobile}">
       <div class="profile-sidebar bg-light rounded-3  flex-column align-items-center">
         <div class="d-flex justify-content-center mb-4 bg-light-background-header history-title">
             <h5 class="text-center mt-2 fw-bold">Informações do perfil</h5>
@@ -39,10 +39,9 @@
             </div>
           </div>
           <div class="profile-actions mt-5">
-            <button :class="{'mx-5': userData.role === 'ADMIN'}" v-if="userStore.id == route.currentRoute._rawValue.query.userId" data-bs-target="#updatePasswordModal" data-bs-toggle="modal" class="btn fw-bold btn-secondary">Alterar Senha</button>
-            <button v-else-if="userStore.role === 'ADMIN' && userStore.id !== route.currentRoute._rawValue.query.userId" data-bs-target="#updateRole" data-bs-toggle="modal" class="btn fs-6 fw-bold btn-secondary">Alterar Encargo</button>
-            <button :class="{'mx-5': userData.role === 'ADMIN'}" v-if="userStore.id == route.currentRoute._rawValue.query.userId" data-bs-target="#deleteAccount" data-bs-toggle="modal" class="btn fs-6  fw-bold btn-light-alert">Excluir Conta</button>
-            <button v-else-if="userStore.role === 'ADMIN' && userStore.id !== route.currentRoute._rawValue.query.userId" data-bs-target="#deleteAccount" data-bs-toggle="modal" class="btn fs-6 fw-bold btn-light-alert">Desativar Conta</button>
+            <button :class="{'mx-5': userData.role === 'ADMIN'}" v-if="userStore.id == route.currentRoute._rawValue.query.userId" data-bs-target="#updatePasswordModal" data-bs-toggle="modal" class="btn fs-6 fw-bold btn-secondary">Alterar Senha</button>
+            <button v-else-if="userStore.role === 'ADMIN' && userStore.id !== route.currentRoute._rawValue.query.userId" data-bs-target="#updateRole" data-bs-toggle="modal" class="mx-5 btn fs-6 fw-bold btn-secondary">Alterar Encargo</button>
+            <button v-if="userStore.role === 'ADMIN' && userData.active" data-bs-target="#deleteAccount" data-bs-toggle="modal" class="mx-5 btn fs-6 fw-bold btn-light-alert">Desativar Conta</button>
           </div>
         </div>
       </div>
@@ -315,7 +314,7 @@
           class="search-empty my-5">
           <p class="text-dark-emphasis fs-4 opacity-75 bg-transparent p-3">Nenhum Registro Encontrado</p>
       </div> 
-      <p class="ms-2 pt-2 fw-bold posts-loader">{{recordsTotalElements}} Registros</p>
+      <p class="ms-2 pt-2 fw-bold posts-loader">{{userRecords.length}} de {{recordsTotalElements}} Registros</p>
     </div>
   </div>
 </div>
@@ -393,9 +392,9 @@
         </button>
     </template>
     <template v-slot:body>
-      <p class="fw-medium text-dark-emphasis text-center">Ao excluir você não terá mais acesso ao sistema por meio dela, porém seus dados ainda ficarão
+      <p class="fw-bold text-center fs-5">Deseja realmente desativar a sua conta?</p>
+      <p class="fw-bold text-dark-emphasis text-center">Ao excluir você não terá mais acesso ao sistema por meio dela, porém seus dados ainda ficarão
          disponíveis para os administradores como históricos e registros.</p>
-      <p class="fw-bold text-center">Deseja realmente desativar a sua conta?</p>
     </template>
     <template v-slot:footer>
       <div class="container-fluid d-flex justify-content-end align-items-center">
@@ -415,9 +414,10 @@ import { getRecordByEmail } from '../services/record/recordGET';
 import { getRequestByStatusUserId, getRequestByUser } from '../services/requests/requestsGET';
 import { useUser } from '../stores/user';
 import { usePopupStore } from '../stores/popup';
+import { useStorageStore } from '../stores/storage'
 import { updatePasswordPUT } from '../services/users/userPUT';
 import { deleteUser } from '../services/users/userDELETE';
-import { useCookie } from 'nuxt/app';
+import { navigateTo, useCookie } from 'nuxt/app';
 import { patchUSER } from '../services/users/userPATCH';
 
 definePageMeta({
@@ -426,6 +426,8 @@ definePageMeta({
 
 const userStore = useUser();
 const popUpStore = usePopupStore();
+const store = useStorageStore();
+
 const route = useRouter();
 const userData = await getUserId(userStore, route.currentRoute._rawValue.query.userId);
 const userRequests = ref([]);
@@ -553,16 +555,19 @@ const patchAccountRole = async() => {
     const res = await patchUSER(userStore, userData.email, newRole.value);
     if(res === true){
       popUpStore.throwPopup('Encargo alterado com sucesso, atualize a página', 'blue');
+      window.location.reload();
     } else if(res === false){
       popUpStore.throwPopup('ERRO: Algum problema interno do sistema ocorreu, contate o suporte', 'red')
     }
 }
 const deleteAccount = async () => {
   try {
-    await deleteUser(userStore, userStore.id);
+    await deleteUser(userStore, route.currentRoute._rawValue.query.userId);
+    await route.currentRoute._rawValue.query.userId === userStore.id ? navigateTo('/login') : window.location.reload();
     popUpStore.throwPopup('Conta excluída com sucesso', 'blue');
   } catch (err) {
     popUpStore.throwPopup('ERRO: Algum problema interno do sistema ocorreu, contate o suporte', 'red');
+    throw new Error(err);
   }
 }
 // Define o título da página
@@ -588,15 +593,27 @@ onMounted(async () => {
   
   if(userStore.role === 'ADMIN' && userRecords.value.length > 0){
     const postsTable = document.getElementById('recordsTable');
-    postsTable.addEventListener('scroll', async () => {
-      if(userRecords.value.length < recordsTotalElements.value){
-        const isBottom = postsTable.scrollHeight - postsTable.scrollTop === postsTable.clientHeight;
-        if (isBottom && currentPage.value[4] < recordTotalPages.value - 1) {
-          currentPage.value[4]++;
-          await fetchRecords(currentPage.value[4]);
+    if(!store.isMobile){
+      postsTable.addEventListener('scroll', async () => {
+        if(userRecords.value.length < recordsTotalElements.value){
+          const isBottom = postsTable.scrollHeight - postsTable.scrollTop === postsTable.clientHeight;
+          if (isBottom && currentPage.value[4] < recordTotalPages.value - 1) {
+            currentPage.value[4]++;
+            await fetchRecords(currentPage.value[4]);
+          }
         }
-      }
-    });
+      });
+    } else{
+      postsTable.addEventListener('touchmove', async () => {
+        if(userRecords.value.length < recordsTotalElements.value){
+          const isBottom = postsTable.scrollTop+400 >= postsTable.scrollHeight;
+          if (isBottom && currentPage.value[4] < recordTotalPages.value - 1) {
+            currentPage.value[4]++;
+            await fetchRecords(currentPage.value[4]);
+          }
+        }
+      });
+    }
   }
 });
 </script>

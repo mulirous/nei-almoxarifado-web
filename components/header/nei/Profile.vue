@@ -210,7 +210,7 @@ onMounted(async() => {
     transition: box-shadow 0.4s ease, border-bottom 0.4s ease-in-out;
 }
 .user-text {
-    max-width: 170px;
+    max-width: 220px;
     font-size: 20px;
 }
 .dropdown-item:hover .notification-text{
@@ -237,7 +237,7 @@ p{
 }
 @media screen and (max-width: 600px){
   .user-text {
-    max-width: 165px;
+    max-width: 180px;
   }
   .notification-menu{
     min-width: 200px;

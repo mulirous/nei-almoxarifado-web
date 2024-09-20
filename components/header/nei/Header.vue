@@ -4,7 +4,7 @@
       <div class="d-flex align-items-center" :class="{'d-none': settingsStore.isMobile}">
         <Brand title="Página incial" />
         <nav v-if="!settingsStore.isMobile" class="navbar navbar-expand py-0 ps-0">
-          <div class="container-fluid">
+          <div class="container-fluid px-0">
             <ul class="navbar-nav d-flex justify-content-center">
                   <a :class="{'navbar-active': currentRoute.fullPath === '/nei/'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/" type="button">Início</a>
                   <a :class="{'navbar-active': currentRoute.fullPath === '/nei/catalogo'}" class="px-1 nav-item nav-link text-light mx-2" href="/nei/catalogo" type="button">Catálogo</a>
@@ -18,7 +18,7 @@
         <div class="d-flex justify-content-end align-items-center pb-0">
         <SearchBar :class="{'d-none': settingsStore.isMobile}"  class="pb-1"/>
         <div :class="{'d-none': !settingsStore.isMobile}" class="d-flex align-items-center text-light me-1" type="button" tabindex="-1" data-bs-target="#neiSearchModal" data-bs-toggle="modal">
-          <IconsSearchGlass class="mobile-search text-light" height="26px" style="margin-bottom: 2px;"/>
+          <IconsSearchGlass class="mobile-search text-light" height="26px"/>
         </div>
         <Profile />
       </div>     
@@ -84,9 +84,6 @@ export default{
 .header{
   position: fixed;
   z-index: 1050;
-}
-.nav-link{
-  font-weight: bold;
 }
 .nav-item{
   padding-top: 12px;

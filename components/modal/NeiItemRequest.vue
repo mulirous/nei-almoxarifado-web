@@ -64,10 +64,10 @@ export default {
     methods: {
         async sendRequest(){
             try{
-                const res = await postRequest(this.userStore, this.item_details.id, this.itemQtd, this.description)
+                const res = await postRequest(this.userStore, this.item_details.id, this.itemQtd, this.description ? this.description : 'nenhuma')
             }catch(err){
-                console.log(err)
-                return this.popUpStore.throwPopup('Erro: digite uma mensagem de solicitação', '#B71C1C')
+                this.popUpStore.throwPopup('Erro: digite uma mensagem de solicitação', '#B71C1C')
+                throw new Error(err);
             }
             return this.popUpStore.throwPopup('Solicitação enviada', '#0B3B69')
         }

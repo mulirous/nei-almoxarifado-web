@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center cards-box me-0">
-                            <div :class="{'d-flex': changeView, 'd-block': !changeView, 'width-adjust': changeView}">
+                            <div :class="{'d-flex': changeView, 'd-block': !changeView, 'width-adjust': changeView}" class="requests-view">
                                     <CardsCard :class="{'card-width-adjust': changeView}" 
                                     v-if="requestsCache.inProgressRequests.length > 0" 
                                     v-for="(request, index) in requestsCache.inProgressRequests.slice(0, requestsLoaded[0])" 
@@ -300,7 +300,7 @@
                                         </div>
                                         <div  :style="{left: isResponseCard[0][index] ? '0px' : '100%', transition: 'left 0.9s ease-in-out'}" class="response-card position-absolute bg-light">
                                             <div  class="row cards-row mx-0 text-nowrap">
-                                                <div class="d-flex bg-dark-emphasis text-light justify-content-between align-items-center">
+                                                <div class="d-flex bg-warning text-light-emphasis justify-content-between align-items-center">
                                                     <p class="justify-content-start my-2 fw-bold">
                                                         Resposta da Solicitação
                                                     </p>
@@ -354,7 +354,7 @@
                         <div :class="{'border-dark-alert border-bottom': requestsCache.rejectedRequests.length > 0}"  class="d-flex align-items-center justify-content-between px-2">
                             <div class="d-flex align-items-center py-2">
                                 <IconsClose class="text-dark-alert me-2" width="30" height="30"/>
-                                <h5 class="m-0 p-0">Recusados
+                                <h5 class="m-0 p-0">Recusadas
                                 </h5>
                                 <span>({{ requestsCache.rejectedRequests.length }})</span>
                             </div>
@@ -457,7 +457,7 @@
                                         </div>
                                         <div  :style="{left: isResponseCard[1][index] ? '0px' : '100%', transition: 'left 0.9s ease-in-out'}" class="response-card position-absolute bg-light">
                                             <div  class="row cards-row mx-0 text-nowrap">
-                                                <div class="d-flex bg-dark-emphasis text-light justify-content-between align-items-center">
+                                                <div class="d-flex bg-warning text-light-emphasis justify-content-between align-items-center">
                                                     <p class="justify-content-start my-2 fw-bold">
                                                         Resposta da Solicitação
                                                     </p>
@@ -570,7 +570,9 @@ const filter = ref({ type: '', order: '' });
 const changeView = ref(false);
 
 const applyFilter = (requests, type, order) => {
-    clearDropdown();
+    if(settingsStore.isMobile){
+        clearDropdown();
+    }
     filter.value.type = type;
     filter.value.order = order;
     sortRequests(requests, filter.value.type, filter.value.order);
@@ -805,7 +807,7 @@ onMounted(() => {
     box-shadow: inset 0px -12px 15px -10px rgb(51, 158, 56, 0.5);
 }
 .box-bg-warning{
-    background-color: rgba(254, 213, 30, 0.2);
+    background-color: rgba(254, 235, 30, 0.2);
 }
 .box-bg-success{
     background-color: rgba(51, 158, 56, 0.2)
@@ -966,7 +968,7 @@ p{
 }
 @media screen and (max-width: 670px){
     .requests-view{
-        margin-right: 10px;
+        margin-right: 8px;
     }
     .cards-box{
         margin-right: 5px;
