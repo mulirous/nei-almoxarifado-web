@@ -148,9 +148,7 @@
                 </div>
               </th>
               <th class="table-cell mov-cell" scope="row">
-                <div class="d-flex table-text align-items-end mt-1 justify-content-center">
-                  {{ record.operation }}
-                </div>
+                <span class="text-light p-2 rounded-1 fw-bold record-operation" :class="{'bg-dark-alert': record.operation === 'EXCLUSAO', 'bg-dark-warning': record.operation === 'CONSUMO', 'bg-dark-success': record.operation === 'CADASTRO'}">{{ record.operation }}</span>
               </th>
               <th class="table-cell mov-cell" scope="row">
                 <div class="d-flex table-text align-items-end mt-1 justify-content-center">

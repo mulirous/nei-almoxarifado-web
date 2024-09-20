@@ -151,7 +151,7 @@ sendDataToParent();
 /*VARIÁVEIS ÚTEIS PARA REQUISITAR OS ITENS E FILTRÁ-LOS*/
 const paginationRet = ref(1)
 function range(start, end) {
-  return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
 }
 
 let pagination = ref(0); //paginação padrão
