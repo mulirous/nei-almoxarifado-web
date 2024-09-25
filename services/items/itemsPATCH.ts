@@ -1,9 +1,9 @@
 import { useApi } from "../../composables/axios";
 
-export const patchItem = async(userStore, itemId, idealAmount) => {
+export const patchItem = async(userStore, itemId, minimumStockLevel) => {
     try{
         const { data } = await useApi().patch(`/itens/${itemId}`, {
-            'idealAmount': idealAmount
+            'minimumStockLevel': minimumStockLevel
         }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ export const patchItem = async(userStore, itemId, idealAmount) => {
         });
         return data
     } catch(err){
-        console.log(err)
+        throw new Error(err)
         return false
     }
 }
