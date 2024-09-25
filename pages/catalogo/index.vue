@@ -36,18 +36,24 @@
             (é possível escolher se deseja visualizar primeiro os itens com menor ou maior quantidade disponível).
         </p>
     </div>
-    <div class="table-box-title position-absolute bg-light-emphasis d-flex align-items-center">
-        <IconsBox class="me-1" width="25" height="25"/>
-        <p class="box-title-text">
+    <div style="margin-left: 8px" class="table-box-title position-absolute bg-light-emphasis d-flex align-items-center" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'opacity-50 bg-dark-op' : 'opacity-100'">
+        <p class="d-flex align-items-center box-title-text">
+            <IconsBox class="me-1" width="25" height="25"/>
             Tabela dos itens do almoxarifado
+        </p>
+    </div>
+    <div style="margin-left: 350px" class="table-box-title position-absolute bg-light-emphasis d-flex align-items-center" type="button" @click="changePanel('minimumstock')" :class="!minimumStockVars.showPanel ? 'opacity-50 bg-dark-op' : 'opacity-100'">
+        <p class="d-flex align-items-center box-title-text">
+            <IconsSpreadSheet class="me-1" width="25" height="25"/>
+            Tabela das quantidades mínimas do almoxarifado
         </p>
     </div>
     <div class="table-box row d-block bg-light mx-2">
         <div class="table-actions d-flex justify-content-between aling-items-center">
             <div class="d-flex align-items-center actions-btns bg-emphasis">
-                <ButtonsResponsiveNewItem class="res-action-btn mt-1" v-if="uploadReloader === 1" />
+                <ButtonsResponsiveNewItem class="res-action-btn mt-1" v-if="uploadReloader === 1 && !minimumStockVars.showPanel" />
                 <ButtonsResponsiveFilter class="res-action-btn mt-1"/>
-                <ButtonsResponsiveConfigure class="res-action-btn mt-1"/>
+                <ButtonsResponsiveConfigure class="res-action-btn mt-1" v-if="!minimumStockVars.showPanel"/>
             </div>
             <span v-if="itemsLoad" class="position-sticky d-flex align-items-center table-searchbar" style="margin-top: 7px;">
                 <IconsSearchGlass class="search-glass"/>
@@ -55,7 +61,7 @@
             </span>   
         </div>
         <div v-if="itemsCache.length > 0" class="overflow-x-scroll p-0">
-            <TablesTable >
+            <TablesTable v-if="!minimumStockVars.showPanel">
                 <template v-slot:header>
                     <tr >
                         <th class="col-title py-2 border" scope="col">Nome</th>
@@ -97,12 +103,61 @@
                         </button>
                    </th>
                 </tr>
-                <!--
-                    <div v-else class="search-empty my-5" style="padding-bottom: 300px;">
-                    <p style="margin-top: 50px;" class="text-dark-emphasis fs-4 opacity-75 bg-transparent">
-                        Nenhum item Encontrado
-                    </p>
-                </div> -->
+            </template>
+            </TablesTable>
+            <TablesTable v-if="minimumStockVars.showPanel">
+                <template v-slot:header>
+                    <tr >
+                        <th class="col-title py-2 border" scope="col">Nome</th>
+                        <th class="col-title py-2 border" scope="col">Tipo Unitário</th>
+                        <th class="col-title py-2 border" scope="col">Quantidade Mínima de Estoque</th>
+                        <th class="col-title py-2 border" scope="col">Ações</th>
+                    </tr>
+                </template>
+                <template v-slot:content>
+                <tr v-if="itemsCache.length > 0" v-for="(item, index) in itemsCache[cacheIndex]" :key="index" :data-index="index">
+                    <th class="border" scope="row">
+                        <div class="cell-text">
+                            <span>{{ item.name }}</span>
+                        </div>
+                    </th>
+                    <th class="border">
+                        <span>{{ item.type }}</span>
+                    </th>
+                    <th class="border">
+                        <div class="progress mt-2 mx-3 text-end d-flex justify-content-between" style="border: 1px solid rgba(0,0,0,0.3); background-color: rgba(31, 105, 177, 0.1);" role="progressbar" aria-label="quantidade mínima" :aria-valuenow="`${item.minimumStockLevel}`" aria-valuemin="0" :aria-valuemax="`${item.quantity}`">
+                          <div class="progress-bar text-end" style="background-color: rgba(254, 213, 30, 0.5);" :style="{width: `${(100*item.minimumStockLevel)/item.quantity}%`}">
+                            <span class="position-absolute" style="margin-top: 30px;">0</span>
+                            <div v-if="item.minimumStockLevel" class="me-2">
+                                <span class="position-absolute" style="margin-top: 9px;">{{item.minimumStockLevel}}</span>
+                            </div>
+                            <div v-if="item.minimumStockLevel" class="">
+                                <span title="Quantidade mínima" class="position-absolute translate-middle bg-warning rounded-circle" style="padding: 8px; border: 1px solid rgba(0,0,0,0.4)">
+                                  <span class="visually-hidden">mínima</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div v-if="item.minimumStockLevel !== item.quantity">
+                            <div class="me-2">
+                                <span class="position-absolute" style="margin-top: 14px;">{{item.quantity}}</span>
+                            </div>
+                            <div class="me-2">
+                                <span title="Quantidade atual" class="position-absolute translate-middle bg-primary mt-1 rounded-circle" style="padding: 8px; border: 1px solid rgba(0,0,0, 0.4)">
+                                  <span class="visually-hidden">atual</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    </th>
+                    <th class="border" width="5%">
+                       <button title="Detalhes" class="my-0 ms-2 details-btn position-sticky table-btn btn btn-primary" @click="showDetails(index)" data-bs-toggle="modal" data-bs-target="#itemDetailing">
+                            <IconsSearchGlass width="18px" height="19px"/>
+                        </button>
+                        <button title="Detalhes" class="my-0 details-btn position-sticky table-btn btn btn-primary" @click="showDetails(index)" data-bs-toggle="modal" data-bs-target="#itemDetailing">
+                            <IconsEdit width="18px" height="19px"/>
+                        </button>
+                    </th>
+                </tr>
             </template>
             </TablesTable>
         </div>
@@ -168,9 +223,6 @@ const paginationRet = ref(1)
 function range(start, end) {
   return Array.from({ length: end - start + 1 }, (_, index) => start + index);
 }
-// const teste = async () => {
-//     const res = await patchItem(userStore, 56, 100);
-// }
 
 let pagination = ref(0); //paginação padrão
 let invertedPagination = ref(0); //paginação invertida para filtro
@@ -180,6 +232,7 @@ let queryParams = ref({
 });
 
 //Aqui faço a requisição em si, também possui parâmetros de filtros, sendo o padrão o de últimos atualizados(como está no banco de dados)
+
 const itemsCache = ref([]);
 const searchCache = ref([])
 const cacheIndex = ref(0);
@@ -444,6 +497,22 @@ const showSearchingDetails = async (itemId) => {
          searching[0].click();
     }, 500)
 }
+
+const minimumStockVars = ref({
+    showPanel: false,
+    showTable: false
+})
+const changePanel = (panelType) => {
+    if(panelType === 'minimumstock'){
+        minimumStockVars.value.showPanel = true
+        setTimeout(() => { minimumStockVars.value.showTable = true }, 500);
+    } else{
+        minimumStockVars.value.showPanel = false;
+        minimumStockVars.value.showTable = false;
+    }
+    
+}
+
 /*HOOKS PARA RESPONSIVIDADE E MODO MOBILE*/
 onMounted(async () => {
     initialLoading.value = false;
@@ -580,6 +649,9 @@ p{
 .pages-info{
     font-size: 13px;
     border-radius: 5px;
+}
+.bg-dark-op{
+    background-color: rgba(0,0,0,0.2);
 }
 .table-btn{
     border-radius: 4px;

@@ -11,26 +11,28 @@
                 <label class="fw-bold" for="item-name">Nome do item</label> 
                 <input class="form-control" v-model="itemName" type="text">
             </div>
-            <div class="sipac-container mb-3" :style="{opacity: itemSipac ? '100%' : '50%'}">
-               <label class="fw-bold" for="item-sipac">Código Sipac <span class="text-light-emphasis ms-3">*opcional*</span></label> 
-               <input class="form-control" v-model="itemSipac" type="number" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-            </div>
             <div class="mb-3 d-flex">
-                <div class="d-block">
-                    <label class="fw-bold" for="item-qtd">Tipo Unitário</label> 
-                    <select v-model="itemType" class="form-select me-5" aria-label="Default select">
+                <div class="d-block sipac-container" :style="{opacity: itemSipac ? '100%' : '50%'}">
+                   <label class="fw-bold" for="item-sipac">Código Sipac <span :class="settingsStore.isMobile ? 'ms-0' : 'ms-3'" class="text-light-emphasis">*opcional*</span></label> 
+                   <input class="form-control" v-model="itemSipac" type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                </div>
+                <div class="d-block ms-3 w-50">
+                    <label class="fw-bold text-nowrap" for="item-qtd">Tipo Unitário</label> 
+                    <select v-model="itemType" class="form-select" aria-label="Default select">
                         <option disabled selected>Selecione o tipo</option>
                         <option v-for="(category, index) in settingsStore.categories" :key="index" :value="category">{{ category }}</option>
                     </select>
                 </div>
-                <div class="d-block ms-5">
+            </div>
+            <div class="mb-3 d-flex">
+                <div class="d-block">
                     <label class="fw-bold" for="item-qtd">Quantidade</label> 
-                    <input class="form-control" v-model="itemQtd" type="number" pattern="[0,9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    <input class="form-control" id="item-qtd" v-model="itemQtd" type="number" pattern="[0,9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                 </div>
-                <!-- <div class="d-block ms-5">
-                    <label class="fw-bold" for="item-qtd">Quantidade Mínima de Estoque</label> 
-                    <input class="form-control" v-model="itemMininumQtd" type="number" pattern="[0,9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                </div> -->
+                <div class="d-block ms-3">
+                    <label class="fw-bold text-nowrap" for="item-minimumlevel">Quantidade Mínima de Estoque</label> 
+                    <input class="form-control" id="item-minimumlevel" v-model="itemMininumQtd" type="number" pattern="[0,9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                </div>
             </div>
         </template>
         <template v-slot:footer>
@@ -55,7 +57,7 @@ export default{
             itemSipac: '',
             itemType: '',
             itemQtd: '',
-            itemMininumQtd: ''
+            itemMininumQtd: '',
         }
     },
     methods: {
@@ -137,5 +139,10 @@ export default{
 }
 .sipac-container:active {
     opacity: 100% !important;
+}
+@media screen and (max-width: 560px) {
+    label{
+        font-size: 14px;
+    }
 }
 </style>
