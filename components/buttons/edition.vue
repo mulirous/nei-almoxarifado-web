@@ -1,7 +1,7 @@
 <template>
-    <button title="Detalhes" class="filter-btn action-btn d-flex btn btn-outline-primary mx-1 px-2 mt-1 text-nowrap" data-bs-toggle="modal" data-bs-target="#itemMinimumStock">
+    <button title="Detalhes" class="filter-btn action-btn text-dark-emphasis d-flex btn btn-outline-primary mx-1 px-2 mt-2 text-nowrap" data-bs-toggle="modal" data-bs-target="#itemMinimumStock">
         Editar
-        <IconsEdit width="18px" height="19px"/>
+        <IconsEdit class="mx-1" width="1.2em" height="1.5em"/>
     </button>
 </template>
 

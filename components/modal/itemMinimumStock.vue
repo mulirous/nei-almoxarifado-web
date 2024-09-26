@@ -50,14 +50,17 @@ const updateStockLevel = async () => {
         popUpStore.throwPopup('Erro: Quantidade deve ser maior que 0', '#B71C1C')
         return 0
     }
-    try{
-        const res = await patchItem(userStore, props.itemIndex, minimumStockLevel.value);
-        store.isReloadItems = true;
-        popUpStore.throwPopup(`Nova quantidade mínima definida`, '#0B3B69')
-    } catch(err){
-        popUpStore.throwPopup('Erro: Algo de errado ocorreu, contate o suporte', '#B71C1C')
-        return 0;
-    }
+    props.items.forEach(async (itemId) => {
+        try{
+            const res = await patchItem(userStore, itemId, minimumStockLevel.value);
+            popUpStore.throwPopup(`Nova quantidade mínima definida`, '#0B3B69')
+        } catch(err){
+            popUpStore.throwPopup('Erro: Algo de errado ocorreu, contate o suporte', '#B71C1C')
+            return 0;
+        }
+    })
+    store.isReloadItems = true;
+
 }
 </script>
 

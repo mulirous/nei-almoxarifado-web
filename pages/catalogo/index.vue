@@ -9,7 +9,7 @@
     <ModalItemDetails v-if="itemsCache.length > 0" :item_index="itemIndex" :item_route="currentRoute" 
         :item_details="showSearchItem && showSearchModal ? searchItem : store.itemDetails" />
     <ModalItemHistory v-if="itemsCache.length > 0"/>
-    <ModalItemMinimumStock :items="minimumStockVars.items" v-if="minimumStockVars.showTable && itemsCache.length > 0"/>
+    <ModalItemMinimumStock :items="itemsCheck" v-if="minimumStockVars.showTable && itemsCache.length > 0"/>
 <div class="table-container d-block mt-2">
     <button v-if="!searchStore.itemSearch.searching" class="d-none searching-btn" data-bs-toggle="modal" data-bs-target="#itemDetailing"></button>
     <div class="sub-catalog bg-light mt-2 ps-2 pe-2">
@@ -54,7 +54,7 @@
             <div class="d-flex align-items-center actions-btns bg-emphasis">
                 <ButtonsResponsiveNewItem class="res-action-btn mt-1" v-if="uploadReloader === 1 && !minimumStockVars.showPanel" />
                 <ButtonsResponsiveFilter class="res-action-btn mt-1"/>
-                <ButtonsEdition class="res-action-btn mt-1" v-if="minimumStockVars.showPanel"/>
+                <ButtonsEdition title="Selecione um item" :class="{'disabled opacity-50': itemsCheck.length === 0}"  class="res-action-btn mt-1" v-if="minimumStockVars.showPanel"/>
                 <ButtonsResponsiveConfigure class="res-action-btn mt-1" v-if="!minimumStockVars.showPanel"/>
             </div>
             <span v-if="itemsLoad" class="position-sticky d-flex align-items-center table-searchbar" style="margin-top: 7px;">
@@ -110,25 +110,21 @@
             <TablesTable class="minimumStockTable" v-if="minimumStockVars.showPanel">
                 <template v-slot:header>
                     <tr>
-                        <th class="col-title py-2 border-top" scope="col"> <input type="checkbox" class="form-check-input"> </th>
-                        <th class="col-title py-2 border-top" scope="col">Status {{ itemsCheck }}</th>
+                        <th class="col-title py-2 border-top" scope="col"> <input @change="toggleSelectAll($event)" 
+                        :checked="selectedAllIndex[cacheIndex]"  value="" type="checkbox" class="form-check-input"> </th>
                         <th class="col-title py-2 border-top" scope="col">Item</th>
                         <th class="col-title py-2 border-top" scope="col">Tipo Unitário</th>
+                        <th class="col-title py-2 border-top" scope="col">Status</th>
                         <th class="col-title py-2 border-top" scope="col">Quantidade Mínima de Estoque</th>
                         <th class="col-title py-2 border-top" scope="col">Ações</th>
                     </tr>
                 </template>
                 <template v-slot:content>
-                <tr v-if="itemsCache.length > 0" v-for="(item, index) in itemsCache[cacheIndex]" :key="index" :data-index="index" :style="{'background-color': itemsCheck[index+((cacheIndex-1)*20)] ? 'rgb(31, 105, 177, 0.2)' : ''}">
+                <tr v-if="itemsCache.length > 0" v-for="(item, index) in itemsCache[cacheIndex]" :key="index" :data-index="index" :style="{'background-color': isSelected(item.id) ? 'rgb(31, 105, 177, 0.2)' : ''}">
                     <th class="border bg-transparent" width="2%">
                         <div class="d-flex align-items-center justify-content-center">
-                            <input v-model="itemsCheck[index+((cacheIndex-1)*20)]" value="" :id="`check-${index}`" class="form-check-input mt-2" style="width: 15px; height: 15px" type="checkbox">
-                        </div>
-                    </th>
-                    <th class="border" scope="row" :style="{'background-color': item.quantity > item.minimumStockLevel ? '' : item.quantity === item.minimumStockLevel ? 'rgba(254, 213, 30, 0.4)' : 'rgba(255, 0, 0, 0.2)'}">
-                        <div class="cell-text text-center text-dark-emphasis">
-                            <IconsWarning v-if="item.quantity <= item.minimumStockLevel"/>
-                            <span class="ms-2 fw-bold">{{ item.quantity > item.minimumStockLevel ? 'Estável' : item.quantity === item.minimumStockLevel ? 'Atenção' : 'Crítico' }}</span>
+                            <input :checked="isSelected(item.id)" 
+                            @change="setCheckItemId(item.id)"  :value="item.id" :id="`check-${index}`" class="form-check-input mt-2" style="width: 15px; height: 15px" type="checkbox">
                         </div>
                     </th>
                     <th class="border bg-transparent" scope="row">
@@ -139,49 +135,46 @@
                     <th class="border bg-transparent">
                         <span>{{ item.type }}</span>
                     </th>
+                    <th class="border bg-transparent" scope="row">
+                        <span class="p-2 fw-bold text-light rounded-1" :class="item.quantity > item.minimumStockLevel ? 'bg-secondary' : item.quantity === item.minimumStockLevel ? 'bg-dark-warning' : 'bg-dark-alert'">
+                            <IconsWarning class="mb-1" v-if="item.quantity <= item.minimumStockLevel"/>
+                            <IconsConfirm class="mb-1" v-else width="20px" height="20px"/>
+                            {{ item.quantity > item.minimumStockLevel ? 'Estável' : item.quantity === item.minimumStockLevel ? 'Atenção' : 'Crítico' }}</span>
+                    </th>
                     <th class="border bg-transparent">
-                        <div class="progress mt-2 mx-2 text-end d-flex justify-content-between" style="border: 1px solid rgba(0,0,0,0.3); background-color: rgba(31, 105, 177, 0.1);" role="progressbar" aria-label="quantidade mínima" :aria-valuenow="`${item.minimumStockLevel}`" aria-valuemin="0" :aria-valuemax="`${item.quantity}`" :style="{width: minimumStockVars.showTable ? `92%` : '0%'}">
-                        <div v-if="item.quantity < item.minimumStockLevel" class="progress-bar text-end" style="background-color: rgba(255, 0, 0, 0.5);" :style="{width: minimumStockVars.showTable ? `${(450*item.quantity)/item.minimumStockLevel}%` : '0%'}">
+                    <div class="progress mt-2 mx-2 text-end d-flex justify-content-between" title="quantidade atual" style="border: 1px solid rgba(0,0,0,0.3); background-color: rgba(31, 105, 177, 0.1);" role="progressbar" aria-label="quantidade mínima" :aria-valuenow="`${item.minimumStockLevel}`" aria-valuemin="0" :aria-valuemax="`${item.quantity}`" :style="{width: minimumStockVars.showTable ? `92%` : '0%'}">
+                        <div v-if="item.quantity < item.minimumStockLevel" title="quantidade atual" class="progress-bar text-end" style="background-color: rgba(255, 0, 0, 0.5);" :style="{width: minimumStockVars.showTable ? `${(450*item.quantity)/item.minimumStockLevel}%` : '0%'}">
                             <span class="position-absolute" style="margin-top: 30px;">0</span>
-                            <div class="me-1">
-                                <span v-if="minimumStockVars.showTable" class="position-absolute" style="margin-top: 14px">{{item.quantity}}</span>
+                            <div style="margin-right: 2px;">
+                                <span v-if="minimumStockVars.showTable" class="position-absolute" style="margin-top: -17px">{{item.quantity}}</span>
                             </div>
-                            <div class="mb-2">
-                                <span title="Quantidade atual" class="position-absolute translate-middle bg-dark-alert mt-1 rounded-circle" style="padding: 8px; border: 1px solid rgba(0,0,0, 0.4)">
-                                    <span class="visually-hidden">atual</span>
-                                </span>
+                            <div style="margin-bottom: 20px;">
+                                <span title="quantidade atual" class="position-absolute bg-dark-alert " style="width: 3px; height: 20px;"></span>
                             </div>
                         </div>
-                        <div class="progress-bar text-end" style="background-color: rgba(254, 213, 30, 0.5);" :style="{width: minimumStockVars.showTable ? `${(100*item.minimumStockLevel)/item.quantity}%` : '0%'}">
+                        <div title="quantidade mínima" class="progress-bar text-end" style="background-color: rgba(254, 213, 30, 0.5);" :style="{width: minimumStockVars.showTable ? `${(100*item.minimumStockLevel)/item.quantity}%` : '0%'}">
                             <span v-if="item.quantity >= item.minimumStockLevel" class="position-absolute" style="margin-top: 30px;">0</span>
-                            <div v-if="item.minimumStockLevel && minimumStockVars.showTable" style="margin-right: 3px;">
-                                <span class="position-absolute" style="margin-top: 9px;">{{item.minimumStockLevel}}</span>
+                            <div v-if="item.minimumStockLevel && minimumStockVars.showTable" style="margin-right: 5px;">
+                                <span class="position-absolute" style="margin-top: -17px;">{{item.minimumStockLevel}}</span>
                             </div>
-                            <div v-if="item.minimumStockLevel">
-                                <span title="Quantidade mínima" class="position-absolute translate-middle bg-warning rounded-circle" style="padding: 8px; border: 1px solid rgba(0,0,0,0.4); margin-left: 0px;">
-                                  <span class="visually-hidden">mínima</span>
-                                </span>
+                            <div v-if="item.minimumStockLevel" style="margin-bottom: 20px; margin-right: 2px;">
+                                <span class="position-absolute bg-dark-warning" style="width: 3px; height: 20px;"></span>
                             </div>
                         </div>
                         <div v-if="item.minimumStockLevel < item.quantity">
                             <div style="margin-right: 2px;">
                                 <span class="position-absolute" style="margin-top: 14px;">{{item.quantity}}</span>
                             </div>
-                            <div>
-                                <span title="Quantidade atual" class="position-absolute translate-middle bg-primary mt-1 rounded-circle" style="padding: 8px; border: 1px solid rgba(0,0,0, 0.4)">
-                                  <span class="visually-hidden">atual</span>
-                                </span>
+                            <div style="margin-right: 2px;">        
+                                <span class="position-absolute bg-secondary" style="width: 3px; height: 20px; margin-top: -5px;"></span>
                             </div>
                         </div>
                     </div>
                     </th>
                     <th class="border bg-transparent" width="5%">
-                        <button title="Detalhes" class="my-0 ms-1 details-btn position-sticky table-btn btn btn-primary" @click="showDetails(index)" data-bs-toggle="modal" data-bs-target="#itemDetailing">
+                        <button title="Detalhes" class="my-0 ms-2 details-btn position-sticky table-btn btn btn-primary" @click="showDetails(index)" data-bs-toggle="modal" data-bs-target="#itemDetailing">
                             <IconsSearchGlass width="18px" height="19px"/>
                         </button>
-                        <!-- <button title="Detalhes" class="my-0 ms-2 details-btn position-sticky table-btn btn btn-secondary" @click="minimumStockVars.itemId = item.id;" data-bs-toggle="modal" data-bs-target="#itemMinimumStock">
-                            <IconsEdit width="18px" height="19px"/>
-                        </button> -->
                     </th>
                 </tr>
             </template>
@@ -199,7 +192,7 @@
                 <span v-if="itemsCache.length > 0" class="ms-2 text-light-emphasis bg-gray-light fw-bold py-2 text-center px-2 pages-info">Quantidade de itens da página: {{ itemsCache[cacheIndex].length }}</span>
                 <span v-if="itemsCache.length > 0 && finded.length === 0" class="ms-2 text-light-emphasis bg-gray-light fw-bold py-2 text-center px-2 pages-info">Quantidade total de itens: {{ totalElements }}</span>
             </div>
-            <nav v-if="itemsCache.length > 0 && finded.length === 0 && !showSearchResults" aria-label="Page navigation" class="pagination">
+            <nav v-if="itemsCache.length > 0 && searchInput === '' && !showSearchResults" aria-label="Page navigation" class="pagination">
                 <ul class="pagination mb-2 mt-2">
                     <li class="page-item">
                         <button class="page-link bg-primary text-light page-nav-radius" :class="{'bg-dark-emphasis disabled': pagination == 0}" id="backPageBtn" @click="backPage"><span aria-hidden="true">&laquo;</span></button>
@@ -431,7 +424,10 @@ const uploadReloader = computed(() => {
     if(store.isReloadItems === true){
         pagination.value = 0;
         cacheIndex.value = 0;
+        itemsCheck.value = []; 
+        selectedAllIndex.value = [];
         itemsCache.value = [];
+        searchInput.value = '';
         searchCache.value = [];
         reqsIndexCache = [0]
 
@@ -536,11 +532,36 @@ const changePanel = (panelType) => {
     } else{
         minimumStockVars.value.showPanel = false;
         minimumStockVars.value.showTable = false;
-    }
-    
+    }   
 }
-
-
+const setCheckItemId = (id, i) => {
+  const index = itemsCheck.value.indexOf(id);
+  if (index === -1) {
+    itemsCheck.value.push(id);
+  } else {
+    itemsCheck.value.splice(index, 1);
+  }
+}
+const selectedAllIndex = ref([]);
+const toggleSelectAll = (event) => {
+    if (event.target.checked) {
+        selectedAllIndex.value[cacheIndex.value] = true;
+        itemsCache.value[cacheIndex.value].forEach(item => {
+            if (!itemsCheck.value.includes(item.id)) {
+                itemsCheck.value.push(item.id);
+            }
+        });
+    } else {
+        selectedAllIndex.value[cacheIndex.value] = false;
+        itemsCache.value[cacheIndex.value].forEach(item => {
+            const index = itemsCheck.value.indexOf(item.id);
+            if (index !== -1) {
+                itemsCheck.value.splice(index, 1);
+            }
+        });
+    }
+};
+const isSelected = (id) => itemsCheck.value.includes(id);
 /*HOOKS PARA RESPONSIVIDADE E MODO MOBILE*/
 onMounted(async () => {
     initialLoading.value = false;
