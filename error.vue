@@ -54,7 +54,7 @@ switch(props.error.statusCode){
 }
 onMounted(() => {
     let token = localStorage.getItem("session");
-    if(props.error.statusCode === 500 && token){
+    if((props.error.statusCode === 500 && token) || (props.error.statusCode === 401 && token)){
         navigateTo('/login')
     }
 })

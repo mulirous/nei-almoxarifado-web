@@ -9,13 +9,13 @@
     <ModalItemDetails v-if="itemsCache.length > 0" :item_index="itemIndex" :item_route="currentRoute" 
         :item_details="showSearchItem && showSearchModal ? searchItem : store.itemDetails" />
     <ModalItemHistory v-if="itemsCache.length > 0"/>
-    <ModalItemMinimumStock :itemIndex="minimumStockVars.itemId" v-if="minimumStockVars.showTable && itemsCache.length > 0"/>
+    <ModalItemMinimumStock :items="minimumStockVars.items" v-if="minimumStockVars.showTable && itemsCache.length > 0"/>
 <div class="table-container d-block mt-2">
     <button v-if="!searchStore.itemSearch.searching" class="d-none searching-btn" data-bs-toggle="modal" data-bs-target="#itemDetailing"></button>
     <div class="sub-catalog bg-light mt-2 ps-2 pe-2">
         <h6 class="sub-catalog-title ps-2 d-flex align-items-center opacity-75">
             <IconsInformation class="me-2"/>
-            Descrição da página  {{store.isReloadItems}}
+            Descrição da página {{store.isReloadItems}}
         </h6>
         <p class="sub-catalog-text opacity-75">
             Nesta página temos todos os itens disponíveis do almoxarifado(itens esgotados devem ser cadastrados novamente). 
@@ -37,16 +37,16 @@
             (é possível escolher se deseja visualizar primeiro os itens com menor ou maior quantidade disponível).
         </p>
     </div>
-    <div style="margin-left: 8px" class="table-box-title position-absolute bg-light-emphasis d-flex align-items-center" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'opacity-50 bg-dark-op' : 'opacity-100'">
+    <div style="margin-left: 8px" class="table-box-title position-absolute d-flex align-items-center px-2" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'bg-primary opacity-50 text-light' : 'bg-light-emphasis'">
         <p class="d-flex align-items-center box-title-text">
             <IconsBox class="me-1" width="25" height="25"/>
-            Tabela dos itens do almoxarifado
+            Itens do almoxarifado
         </p>
     </div>
-    <div style="margin-left: 350px" class="table-box-title position-absolute bg-light-emphasis d-flex align-items-center" type="button" @click="changePanel('minimumstock')" :class="!minimumStockVars.showPanel ? 'opacity-50 bg-dark-op' : 'opacity-100'">
+    <div style="margin-left: 260px" class="table-box-title position-absolute  d-flex align-items-center px-2" type="button" @click="changePanel('minimumstock')" :class="!minimumStockVars.showPanel ? 'bg-primary opacity-50 text-light' : 'bg-light-emphasis'">
         <p class="d-flex align-items-center box-title-text">
             <IconsSpreadSheet class="me-1" width="25" height="25"/>
-            Tabela das quantidades mínimas do almoxarifado
+            Níveis do almoxarifado
         </p>
     </div>
     <div class="table-box row d-block bg-light mx-2">
@@ -54,6 +54,7 @@
             <div class="d-flex align-items-center actions-btns bg-emphasis">
                 <ButtonsResponsiveNewItem class="res-action-btn mt-1" v-if="uploadReloader === 1 && !minimumStockVars.showPanel" />
                 <ButtonsResponsiveFilter class="res-action-btn mt-1"/>
+                <ButtonsEdition class="res-action-btn mt-1" v-if="minimumStockVars.showPanel"/>
                 <ButtonsResponsiveConfigure class="res-action-btn mt-1" v-if="!minimumStockVars.showPanel"/>
             </div>
             <span v-if="itemsLoad" class="position-sticky d-flex align-items-center table-searchbar" style="margin-top: 7px;">
@@ -108,29 +109,42 @@
             </TablesTable>
             <TablesTable class="minimumStockTable" v-if="minimumStockVars.showPanel">
                 <template v-slot:header>
-                    <tr >
-                        <th class="col-title py-2 border" scope="col">Nome</th>
-                        <th class="col-title py-2 border" scope="col">Tipo Unitário</th>
-                        <th class="col-title py-2 border" scope="col">Quantidade Mínima de Estoque</th>
-                        <th class="col-title py-2 border" scope="col">Ações</th>
+                    <tr>
+                        <th class="col-title py-2 border-top" scope="col"> <input type="checkbox" class="form-check-input"> </th>
+                        <th class="col-title py-2 border-top" scope="col">Status {{ itemsCheck }}</th>
+                        <th class="col-title py-2 border-top" scope="col">Item</th>
+                        <th class="col-title py-2 border-top" scope="col">Tipo Unitário</th>
+                        <th class="col-title py-2 border-top" scope="col">Quantidade Mínima de Estoque</th>
+                        <th class="col-title py-2 border-top" scope="col">Ações</th>
                     </tr>
                 </template>
                 <template v-slot:content>
-                <tr v-if="itemsCache.length > 0" v-for="(item, index) in itemsCache[cacheIndex]" :key="index" :data-index="index">
-                    <th class="border" scope="row">
+                <tr v-if="itemsCache.length > 0" v-for="(item, index) in itemsCache[cacheIndex]" :key="index" :data-index="index" :style="{'background-color': itemsCheck[index+((cacheIndex-1)*20)] ? 'rgb(31, 105, 177, 0.2)' : ''}">
+                    <th class="border bg-transparent" width="2%">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <input v-model="itemsCheck[index+((cacheIndex-1)*20)]" value="" :id="`check-${index}`" class="form-check-input mt-2" style="width: 15px; height: 15px" type="checkbox">
+                        </div>
+                    </th>
+                    <th class="border" scope="row" :style="{'background-color': item.quantity > item.minimumStockLevel ? '' : item.quantity === item.minimumStockLevel ? 'rgba(254, 213, 30, 0.4)' : 'rgba(255, 0, 0, 0.2)'}">
+                        <div class="cell-text text-center text-dark-emphasis">
+                            <IconsWarning v-if="item.quantity <= item.minimumStockLevel"/>
+                            <span class="ms-2 fw-bold">{{ item.quantity > item.minimumStockLevel ? 'Estável' : item.quantity === item.minimumStockLevel ? 'Atenção' : 'Crítico' }}</span>
+                        </div>
+                    </th>
+                    <th class="border bg-transparent" scope="row">
                         <div class="cell-text">
                             <span>{{ item.name }}</span>
                         </div>
                     </th>
-                    <th class="border">
+                    <th class="border bg-transparent">
                         <span>{{ item.type }}</span>
                     </th>
-                    <th class="border">
-                        <div class="progress mt-2 mx-3 text-end d-flex justify-content-between" style="border: 1px solid rgba(0,0,0,0.3); background-color: rgba(31, 105, 177, 0.1);" role="progressbar" aria-label="quantidade mínima" :aria-valuenow="`${item.minimumStockLevel}`" aria-valuemin="0" :aria-valuemax="`${item.quantity}`" :style="{width: minimumStockVars.showTable ? `` : '0%'}">
+                    <th class="border bg-transparent">
+                        <div class="progress mt-2 mx-2 text-end d-flex justify-content-between" style="border: 1px solid rgba(0,0,0,0.3); background-color: rgba(31, 105, 177, 0.1);" role="progressbar" aria-label="quantidade mínima" :aria-valuenow="`${item.minimumStockLevel}`" aria-valuemin="0" :aria-valuemax="`${item.quantity}`" :style="{width: minimumStockVars.showTable ? `92%` : '0%'}">
                         <div v-if="item.quantity < item.minimumStockLevel" class="progress-bar text-end" style="background-color: rgba(255, 0, 0, 0.5);" :style="{width: minimumStockVars.showTable ? `${(450*item.quantity)/item.minimumStockLevel}%` : '0%'}">
                             <span class="position-absolute" style="margin-top: 30px;">0</span>
                             <div class="me-1">
-                                <span class="position-absolute" style="margin-top: 14px">{{item.quantity}}</span>
+                                <span v-if="minimumStockVars.showTable" class="position-absolute" style="margin-top: 14px">{{item.quantity}}</span>
                             </div>
                             <div class="mb-2">
                                 <span title="Quantidade atual" class="position-absolute translate-middle bg-dark-alert mt-1 rounded-circle" style="padding: 8px; border: 1px solid rgba(0,0,0, 0.4)">
@@ -138,22 +152,22 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="progress-bar text-end" style="background-color: rgba(254, 213, 30, 0.5);" :style="{width: minimumStockVars.showTable ? `${(99*item.minimumStockLevel)/item.quantity}%` : '0%'}">
+                        <div class="progress-bar text-end" style="background-color: rgba(254, 213, 30, 0.5);" :style="{width: minimumStockVars.showTable ? `${(100*item.minimumStockLevel)/item.quantity}%` : '0%'}">
                             <span v-if="item.quantity >= item.minimumStockLevel" class="position-absolute" style="margin-top: 30px;">0</span>
-                            <div v-if="item.minimumStockLevel && minimumStockVars.showTable" class="me-2">
+                            <div v-if="item.minimumStockLevel && minimumStockVars.showTable" style="margin-right: 3px;">
                                 <span class="position-absolute" style="margin-top: 9px;">{{item.minimumStockLevel}}</span>
                             </div>
-                            <div v-if="item.minimumStockLevel" class="">
-                                <span title="Quantidade mínima" class="position-absolute translate-middle bg-warning rounded-circle" style="padding: 8px; border: 1px solid rgba(0,0,0,0.4)">
+                            <div v-if="item.minimumStockLevel">
+                                <span title="Quantidade mínima" class="position-absolute translate-middle bg-warning rounded-circle" style="padding: 8px; border: 1px solid rgba(0,0,0,0.4); margin-left: 0px;">
                                   <span class="visually-hidden">mínima</span>
                                 </span>
                             </div>
                         </div>
                         <div v-if="item.minimumStockLevel < item.quantity">
-                            <div style="margin-right: 13px;">
+                            <div style="margin-right: 2px;">
                                 <span class="position-absolute" style="margin-top: 14px;">{{item.quantity}}</span>
                             </div>
-                            <div class="me-2">
+                            <div>
                                 <span title="Quantidade atual" class="position-absolute translate-middle bg-primary mt-1 rounded-circle" style="padding: 8px; border: 1px solid rgba(0,0,0, 0.4)">
                                   <span class="visually-hidden">atual</span>
                                 </span>
@@ -161,13 +175,13 @@
                         </div>
                     </div>
                     </th>
-                    <th class="border" width="5%">
-                        <button title="Detalhes" class="my-0 ms-2 details-btn position-sticky table-btn btn btn-secondary" @click="minimumStockVars.itemId = item.id;" data-bs-toggle="modal" data-bs-target="#itemMinimumStock">
-                            <IconsEdit width="18px" height="19px"/>
-                        </button>
-                       <button title="Detalhes" class="my-0 details-btn position-sticky table-btn btn btn-primary" @click="showDetails(index)" data-bs-toggle="modal" data-bs-target="#itemDetailing">
+                    <th class="border bg-transparent" width="5%">
+                        <button title="Detalhes" class="my-0 ms-1 details-btn position-sticky table-btn btn btn-primary" @click="showDetails(index)" data-bs-toggle="modal" data-bs-target="#itemDetailing">
                             <IconsSearchGlass width="18px" height="19px"/>
                         </button>
+                        <!-- <button title="Detalhes" class="my-0 ms-2 details-btn position-sticky table-btn btn btn-secondary" @click="minimumStockVars.itemId = item.id;" data-bs-toggle="modal" data-bs-target="#itemMinimumStock">
+                            <IconsEdit width="18px" height="19px"/>
+                        </button> -->
                     </th>
                 </tr>
             </template>
@@ -244,7 +258,7 @@ let queryParams = ref({
 });
 
 //Aqui faço a requisição em si, também possui parâmetros de filtros, sendo o padrão o de últimos atualizados(como está no banco de dados)
-
+const itemsCheck = ref([]);
 const itemsCache = ref([]);
 const searchCache = ref([])
 const cacheIndex = ref(0);
@@ -513,7 +527,7 @@ const showSearchingDetails = async (itemId) => {
 const minimumStockVars = ref({
     showPanel: false,
     showTable: false,
-    itemId: 0
+    items: []
 })
 const changePanel = (panelType) => {
     if(panelType === 'minimumstock'){
@@ -664,9 +678,6 @@ p{
     font-size: 13px;
     border-radius: 5px;
 }
-.bg-dark-op{
-    background-color: rgba(0,0,0,0.2);
-}
 .table-btn{
     border-radius: 4px;
     top: 0px;
@@ -711,7 +722,10 @@ tr:hover p{
     opacity: 50%;
 }
 .progress-bar, .progress{
-    transition: width 1s ease-in-out;
+    transition: width 1.5s ease-in-out;
+}
+.form-check-input{
+    border: 1px solid rgba(0, 0, 0,0.4)
 }
 /*RESPONSIVIDADE*/
 

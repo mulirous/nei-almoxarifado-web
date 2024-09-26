@@ -34,8 +34,8 @@ import { useRoute } from 'vue-router';
 import { patchItem } from '../../services/items/itemsPATCH';
 import { useUser } from '../../stores/user';
 const props = defineProps({
-    itemIndex: {
-        type: Number,
+    items: {
+        type: Array,
         required: true
     }
 })
