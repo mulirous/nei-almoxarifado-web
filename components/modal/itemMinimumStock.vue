@@ -46,11 +46,7 @@ const store = useStorageStore();
 const userStore = useUser();
 const popUpStore = usePopupStore();
 const updateStockLevel = async () => {
-    if(minimumStockLevel.value === 0){
-        popUpStore.throwPopup('Erro: Quantidade deve ser maior que 0', '#B71C1C')
-        return 0
-    }
-    props.items.forEach(async (itemId) => {
+    const promises = props.items.map(async (itemId) => {
         try{
             const res = await patchItem(userStore, itemId, minimumStockLevel.value);
             popUpStore.throwPopup(`Nova quantidade mínima definida`, '#0B3B69')
@@ -59,8 +55,10 @@ const updateStockLevel = async () => {
             return 0;
         }
     })
-    store.isReloadItems = true;
 
+    await Promise.all(promises);
+    
+    store.isReloadItems = true;
 }
 </script>
 

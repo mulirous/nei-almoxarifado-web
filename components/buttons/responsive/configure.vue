@@ -146,6 +146,7 @@ li{
         padding-right: 2px !important;
     }
     .action-btn{
+        margin-bottom: -3px !important;
         font-size: 12px;
     }
     .filter-btn{
@@ -156,7 +157,7 @@ li{
         height: 15px;
     } 
 }
-@media screen and (max-width: 500px){
+@media screen and (max-width: 530px){
     .action-btn{
         border-radius: 5px 5px 5px 5px;
         background-color: #0B3B69;

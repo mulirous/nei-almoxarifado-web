@@ -194,9 +194,10 @@ li{
 @media screen and (max-width: 820px){
     .action-btn{
         font-size:  12px;
+        margin-bottom: -3px !important;
     }
 }
-@media screen and (max-width: 500px){
+@media screen and (max-width: 530px){
     .action-btn{
         border-radius: 5px 5px 5px 5px;
         background-color: #0B3B69;

@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     try{
         const res = await getRoles(userStore);
     } catch(err){
-        navigateTo('/login')
+        return navigateTo('/login')
     }
     if(userStore.role === 'USER'){
         if(userStore.token == ''){

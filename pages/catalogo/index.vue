@@ -37,24 +37,26 @@
             (é possível escolher se deseja visualizar primeiro os itens com menor ou maior quantidade disponível).
         </p>
     </div>
-    <div style="margin-left: 8px" class="table-box-title position-absolute d-flex align-items-center px-2" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'bg-primary opacity-50 text-light' : 'bg-light-emphasis'">
-        <p class="d-flex align-items-center box-title-text">
-            <IconsBox class="me-1" width="25" height="25"/>
-            Itens do almoxarifado
-        </p>
-    </div>
-    <div style="margin-left: 260px" class="table-box-title position-absolute  d-flex align-items-center px-2" type="button" @click="changePanel('minimumstock')" :class="!minimumStockVars.showPanel ? 'bg-primary opacity-50 text-light' : 'bg-light-emphasis'">
-        <p class="d-flex align-items-center box-title-text">
-            <IconsSpreadSheet class="me-1" width="25" height="25"/>
-            Níveis do almoxarifado
-        </p>
+    <div class="table-titles position-absolute d-flex">
+        <div style="margin-left: 8px" class="table-box-title d-flex align-items-center px-2" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'bg-primary opacity-50 text-light' : 'bg-light-emphasis'">
+            <p class="d-flex align-items-center box-title-text">
+                <IconsBox class="me-1" width="25" height="25"/>
+                Itens do almoxarifado
+            </p>
+        </div>
+        <div style="margin-left: 15px" class="table-box-title alt-table-title d-flex align-items-center px-2" type="button" @click="changePanel('minimumstock')" :class="!minimumStockVars.showPanel ? 'bg-primary opacity-50 text-light' : 'bg-light-emphasis'">
+            <p class="d-flex align-items-center box-title-text">
+                <IconsSpreadSheet class="me-1" width="25" height="25"/>
+                Níveis do almoxarifado
+            </p>
+        </div>
     </div>
     <div class="table-box row d-block bg-light mx-2">
         <div class="table-actions d-flex justify-content-between aling-items-center">
             <div class="d-flex align-items-center actions-btns bg-emphasis">
                 <ButtonsResponsiveNewItem class="res-action-btn mt-1" v-if="uploadReloader === 1 && !minimumStockVars.showPanel" />
                 <ButtonsResponsiveFilter class="res-action-btn mt-1"/>
-                <ButtonsEdition title="Selecione um item" :class="{'disabled opacity-50': itemsCheck.length === 0}"  class="res-action-btn mt-1" v-if="minimumStockVars.showPanel"/>
+                <ButtonsEdition title="Selecione um item" :class="{'disabled opacity-50': itemsCheck.length === 0}"  class="res-action-btn mt-0" v-if="minimumStockVars.showPanel"/>
                 <ButtonsResponsiveConfigure class="res-action-btn mt-1" v-if="!minimumStockVars.showPanel"/>
             </div>
             <span v-if="itemsLoad" class="position-sticky d-flex align-items-center table-searchbar" style="margin-top: 7px;">
@@ -76,34 +78,34 @@
                 </template>
                 <template v-slot:content>
                 <tr v-if="itemsCache.length > 0" v-for="(item, index) in itemsCache[cacheIndex]" :key="index" :data-index="index">
-                   <th class="border" scope="row">
+                    <th class="border" scope="row">
                         <div class="cell-text">
                             <span>{{ item.name }}</span>
                         </div>
-                   </th>
-                   <th class="border">
+                    </th>
+                    <th class="border">
                         <span v-if="item.sipacCode">{{ item.sipacCode }}</span>
                         <span v-else>nenhum</span>
                     </th>
                     <th class="border">
                         <span>{{ item.type }}</span>
                     </th>
-                   <th class="border">
-                       <span>{{ item.quantity }}</span>
+                    <th class="border">
+                        <span>{{ item.quantity }}</span>
                     </th>
-                   <th class="border">
+                    <th class="border">
                         <div class="cell-text">
                             <span>{{ item.lastRecord.operation }} {{  item.lastRecord.creationDate.slice(0, 16) }} {{ item.lastRecord.user.name }}</span>
                         </div>
-                   </th>
-                   <th class="border" width="5%">
-                       <button title="Detalhes" class="my-0 ms-2 details-btn position-sticky table-btn btn btn-primary" @click="showDetails(index)" data-bs-toggle="modal" data-bs-target="#itemDetailing">
+                    </th>
+                    <th class="border" width="5%">
+                        <button title="Detalhes" class="my-0 ms-2 details-btn position-sticky table-btn btn btn-primary" @click="showDetails(index)" data-bs-toggle="modal" data-bs-target="#itemDetailing">
                             <IconsSearchGlass width="18px" height="19px"/>
                         </button>
                         <button title="Histórico" class="my-0 position-sticky table-btn btn btn-secondary"   @click="showHistory(item.id)" data-bs-toggle="modal" data-bs-target="#itemHistory">
                             <IconsHistory width="18px" height="19px"/>
                         </button>
-                   </th>
+                    </th>
                 </tr>
             </template>
             </TablesTable>
@@ -142,34 +144,38 @@
                             {{ item.quantity > item.minimumStockLevel ? 'Estável' : item.quantity === item.minimumStockLevel ? 'Atenção' : 'Crítico' }}</span>
                     </th>
                     <th class="border bg-transparent">
-                    <div class="progress mt-2 mx-2 text-end d-flex justify-content-between" title="quantidade atual" style="border: 1px solid rgba(0,0,0,0.3); background-color: rgba(31, 105, 177, 0.1);" role="progressbar" aria-label="quantidade mínima" :aria-valuenow="`${item.minimumStockLevel}`" aria-valuemin="0" :aria-valuemax="`${item.quantity}`" :style="{width: minimumStockVars.showTable ? `92%` : '0%'}">
-                        <div v-if="item.quantity < item.minimumStockLevel" title="quantidade atual" class="progress-bar text-end" style="background-color: rgba(255, 0, 0, 0.5);" :style="{width: minimumStockVars.showTable ? `${(450*item.quantity)/item.minimumStockLevel}%` : '0%'}">
-                            <span class="position-absolute" style="margin-top: 30px;">0</span>
-                            <div style="margin-right: 2px;">
-                                <span v-if="minimumStockVars.showTable" class="position-absolute" style="margin-top: -17px">{{item.quantity}}</span>
+                        <div class="progress mt-2 mx-2 text-end d-flex justify-content-between overflow-visible" title="quantidade atual" style="border: 1px solid rgba(0,0,0,0.3); background-color: rgba(31, 105, 177, 0.1);" role="progressbar" aria-label="quantidade mínima" :aria-valuenow="`${item.minimumStockLevel}`" aria-valuemin="0" :aria-valuemax="`${item.quantity}`" :style="{width: minimumStockVars.showTable ? `92%` : '0%'}">
+                            <div v-if="item.quantity < item.minimumStockLevel" title="quantidade atual" class="progress-bar overflow-visible text-end" style="background-color: rgba(255, 0, 0, 0.5);" :style="{width: minimumStockVars.showTable ? `${(450*item.quantity)/item.minimumStockLevel}%` : '0%'}">
+                                <div v-if="item.quantity < item.minimumStockLevel" class="position-relative mb-1" >
+                                    <span class="position-absolute" style="left: -5px; margin-top: 10px;">0</span>
+                                    <div>
+                                        <span v-if="minimumStockVars.showTable" class="position-absolute" style="bottom: 7px; margin-left: -2px;">{{item.quantity}}</span>
+                                    </div>
+                                    <div>
+                                        <span title="quantidade atual" class="position-absolute bg-dark-alert" style="width: 3px; height: 20px; bottom: -12px;"></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div style="margin-bottom: 20px;">
-                                <span title="quantidade atual" class="position-absolute bg-dark-alert " style="width: 3px; height: 20px;"></span>
+                            <div title="quantidade mínima" class="progress-bar text-end overflow-visible" style="background-color: rgba(254, 213, 30, 0.5);" :style="{width: minimumStockVars.showTable ? `${(100*item.minimumStockLevel)/item.quantity}%` : '0%'}">
+                                <div class="position-relative" style="margin-right: 2px">
+                                    <span v-if="item.quantity >= item.minimumStockLevel" class="position-absolute mt-2" style="left: -5px;">0</span>
+                                    <div v-if="item.minimumStockLevel && minimumStockVars.showTable" style="margin-right: 8px;">
+                                        <span class="position-absolute" style="margin-top: -27px;">{{item.minimumStockLevel}}</span>
+                                    </div>
+                                    <div v-if="item.minimumStockLevel">
+                                        <span class="position-absolute bg-dark-warning" style="width: 3px; height: 20px; bottom: -10px;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative" v-if="item.minimumStockLevel < item.quantity" style="margin-right: 2px;">
+                                <div>
+                                    <span class="position-absolute" style="margin-top: 14px; right: -10px;">{{item.quantity}}</span>
+                                </div>
+                                <div>        
+                                    <span class="position-absolute bg-secondary" style="width: 3px; height: 20px; bottom: -5px;"></span>
+                                </div>
                             </div>
                         </div>
-                        <div title="quantidade mínima" class="progress-bar text-end" style="background-color: rgba(254, 213, 30, 0.5);" :style="{width: minimumStockVars.showTable ? `${(100*item.minimumStockLevel)/item.quantity}%` : '0%'}">
-                            <span v-if="item.quantity >= item.minimumStockLevel" class="position-absolute" style="margin-top: 30px;">0</span>
-                            <div v-if="item.minimumStockLevel && minimumStockVars.showTable" style="margin-right: 5px;">
-                                <span class="position-absolute" style="margin-top: -17px;">{{item.minimumStockLevel}}</span>
-                            </div>
-                            <div v-if="item.minimumStockLevel" style="margin-bottom: 20px; margin-right: 2px;">
-                                <span class="position-absolute bg-dark-warning" style="width: 3px; height: 20px;"></span>
-                            </div>
-                        </div>
-                        <div v-if="item.minimumStockLevel < item.quantity">
-                            <div style="margin-right: 2px;">
-                                <span class="position-absolute" style="margin-top: 14px;">{{item.quantity}}</span>
-                            </div>
-                            <div style="margin-right: 2px;">        
-                                <span class="position-absolute bg-secondary" style="width: 3px; height: 20px; margin-top: -5px;"></span>
-                            </div>
-                        </div>
-                    </div>
                     </th>
                     <th class="border bg-transparent" width="5%">
                         <button title="Detalhes" class="my-0 ms-2 details-btn position-sticky table-btn btn btn-primary" @click="showDetails(index)" data-bs-toggle="modal" data-bs-target="#itemDetailing">
@@ -240,7 +246,7 @@ const settingsStore = useSettingsStore();
 /*VARIÁVEIS ÚTEIS PARA REQUISITAR OS ITENS E FILTRÁ-LOS*/ 
 const paginationRet = ref(1)
 function range(start, end) {
-  return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
 }
 
 let pagination = ref(0); //paginação padrão
@@ -799,15 +805,29 @@ tr:hover p{
         margin: 15px;
     }
     .table-box-title{
-        margin-top: 25px;
+        margin-top: 27px;
     }
 } 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 530px){
+    .table-box{
+        margin-top: 150px;
+        border-radius: 0px 0px 10px 10px;
+    }
+    .table-titles{
+        margin-top: 70px;
+        width: 98%;
+        display: block !important;
+    }
+    .alt-table-title{
+        margin-left: 8px !important;
+        margin-top: 0px !important;
+    }
     .box-title-text{
         font-size: 18px;
     }
     .table-box-title{
-        margin-top: 30px;
+        border-radius: 0px 0px 1px 0px;
+        margin-top: -5px;
     }
     .table-actions{
         padding-right: 0px !important;
