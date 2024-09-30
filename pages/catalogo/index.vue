@@ -33,8 +33,7 @@
             permite alterar a forma como os itens são exibidos. 
             Com ele, você pode ordenar os itens por diferentes critérios, 
             como data de criação (do mais recente ao mais antigo ou vice-versa), 
-            nome e quantidade de itens em estoque 
-            (é possível escolher se deseja visualizar primeiro os itens com menor ou maior quantidade disponível).
+            nome e quantidade de itens em estoque.
         </p>
     </div>
     <div class="table-titles position-absolute d-flex">
