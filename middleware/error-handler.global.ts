@@ -8,11 +8,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         return
     }
     const userStore = useUser();
-    try{
-        const res = await getRoles(userStore);
-    } catch(err){
-        return navigateTo('/login')
-    }
     if(userStore.role === 'USER'){
         if(userStore.token == ''){
             return navigateTo('/login')
