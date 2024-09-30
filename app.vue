@@ -67,12 +67,12 @@ function checkIfMobile() {
 
 /* Para Firefox */
 * {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) white; /* Fundo branco no Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) white; /* Fundo branco no Firefox */
 }
 
 *::-moz-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.3); 
+  background-color: rgba(0, 0, 0, 0.3); 
 }
 
 
@@ -230,7 +230,7 @@ function checkIfMobile() {
 }
 .darkLayout th{
   color: rgb(255,255,255,0.8) !important;
-  background-color: #1A1A1A !important;
+  background-color: transparent !important;
   border: solid 1px #333333 !important;
 }
 .darkLayout .border-2{

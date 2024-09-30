@@ -22,7 +22,7 @@ Certifique-se de que cada coluna esteja corretamente identificada e preenchida, 
 Caso tenha dúvidas ou precise de uma referência sobre como estruturar sua planilha, disponibilizamos um <a href="/planilha_padrao.xlsx">Modelo Padrão</a> que você pode utilizar como exemplo para organizar seus dados adequadamente. </p>
                 <p class="px-3"></p>
                 <p class="message-alert bg-warning d-flex align-items-center mx-5">
-                   Aviso: Qualquer linha branca/vazia, com dados obstruídos ou qualquer item com estoque atual negativo não serão processados na importação, sendo necessário o cadastro manual.
+                Aviso: Qualquer linha branca/vazia, com dados obstruídos ou qualquer item com estoque atual negativo não serão processados na importação, sendo necessário o cadastro manual.
                 </p>
                 <div class="d-block">
                     <input class="form-control" type="file" @change="handleFileUpload" accept=".xlsx, .xls, .csv" />
@@ -93,9 +93,9 @@ const sendUploadedData = async () => {
     const executeBatch = async () => {
         const batchPromises = [];
         while (index < tableData.length && batchPromises.length < concurrencyLimit) {
-            if (tableData[index][4] > 0) {
+            if (tableData[index][3] > 0) {
                 batchPromises.push(
-                    postCreateItem(userStore, tableData[index][1], '', tableData[index][4], tableData[index][2])
+                    await postCreateItem(userStore, tableData[index][1], tableData[index][0] ? tableData[index][0] : '', tableData[index][3], tableData[index][2], tableData[index][4])
                     .then(() => {
                             itemsUploaded++;
                     })
@@ -130,7 +130,8 @@ p{
     color: rgba(51, 51, 51, 0.8);
 }
 .btn{
-    font-size: 20px !important;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    font-size: 18px !important;
     padding: 20px 20xp 13px 13px;   
 }
 .dashboard-section{   

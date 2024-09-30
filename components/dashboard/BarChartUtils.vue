@@ -245,7 +245,7 @@ const currentDataType = ref('mostItems');
 const currentDataTypeLabel = ref('Distribuição: Itens');
 
 const chartData = ref({
-  labels: labels[currentDataType.value][0].slice(0, 15),
+  labels: labels[currentDataType.value][0].slice(0, 30),
   datasets: [
     {
       label: currentLabelName,
@@ -254,7 +254,7 @@ const chartData = ref({
   "#2E4053", "#2980B9", "#76D7C4", "#239B56", "#D68910",
   "#D35400", "#7B241C", "#F4D03F", "#A569BD", "#E74C3C"
 ],
-       data: datasets[currentDataType.value+'Time'][0].slice(0, 15),
+       data: datasets[currentDataType.value+'Time'][0].slice(0, 30),
     },
   ],
 });
@@ -265,8 +265,10 @@ const chartOptions = ref({
   plugins: {
     legend: {
       position: 'bottom',
-      left: 100,
       align: 'center',
+      labels: {
+        padding: 20
+      }
     },
   },
 });
@@ -277,11 +279,11 @@ const changeLabel = (monthIndex) => {
     currentIndex.value = 0;
     chartData.value = {
       ...chartData.value,
-      labels: labels[currentDataType.value][0].slice(0, 15),
+      labels: labels[currentDataType.value][0].slice(0, 30),
       datasets: [
         {
           ...chartData.value.datasets[0],
-          data: datasets[currentDataType.value + 'Time'][0].slice(0, 15),
+          data: datasets[currentDataType.value + 'Time'][0].slice(0, 20),
         },
       ],
     };
@@ -289,11 +291,11 @@ const changeLabel = (monthIndex) => {
     currentIndex.value = 1;
     chartData.value = {
       ...chartData.value,
-      labels: labels[currentDataType.value][1][monthIndex - 1] === undefined ? [] : labels[currentDataType.value][1][monthIndex - 1].slice(0, 15),
+      labels: labels[currentDataType.value][1][monthIndex - 1] === undefined ? [] : labels[currentDataType.value][1][monthIndex - 1].slice(0, 20),
       datasets: [
         {
           ...chartData.value.datasets[0],
-          data: datasets[currentDataType.value + 'Time'][1][monthIndex - 1] === undefined ? [] : datasets[currentDataType.value + 'Time'][1][monthIndex - 1].slice(0, 15),
+          data: datasets[currentDataType.value + 'Time'][1][monthIndex - 1] === undefined ? [] : datasets[currentDataType.value + 'Time'][1][monthIndex - 1].slice(0, 20),
         },
       ],
     }
@@ -302,23 +304,11 @@ const changeLabel = (monthIndex) => {
 
 const toggleDataType = () => {
   currentDataType.value = currentDataType.value === 'mostItems' ? 'mostRequesters' : 'mostItems';
-  // currentLabelName.value = currentDataType.value === 'mostItems' ? 'Usuários com mais solicitações' : 'Itens mais solicitados';
   currentDataTypeLabel.value = currentDataType.value === 'mostItems' ? 'Distribuição: Itens' : 'Distribuição: Usuários';
 
   changeLabel(monthSelected);
 };
 
-onMounted(async () => {
-  /*
-  if (store.isMobile) {
-    const btnText = document.querySelectorAll('.filter-btn');
-    const dropdownToggle = document.querySelector('.dropdown-principal');
-    dropdownToggle. removeAttribute('data-bs-auto-close');
-    dropdownToggle.setAttribute('data-bs-auto-close', 'outside');
-    btnText.forEach(element => element.style.fontSize = '9px');
-  }
-  */
-});
 </script>
 
 

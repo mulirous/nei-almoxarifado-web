@@ -38,13 +38,13 @@
         </p>
     </div>
     <div class="table-titles position-absolute d-flex">
-        <div style="margin-left: 8px" class="table-box-title d-flex align-items-center px-2" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'bg-primary opacity-50 text-light' : 'bg-light-emphasis'">
+        <div style="margin-left: 8px" class="table-box-title d-flex align-items-center px-2" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'bg-secondary opacity-50 text-light' : 'bg-light-emphasis'">
             <p class="d-flex align-items-center box-title-text">
                 <IconsBox class="me-1" width="25" height="25"/>
                 Itens do almoxarifado
             </p>
         </div>
-        <div style="margin-left: 15px" class="table-box-title alt-table-title d-flex align-items-center px-2" type="button" @click="changePanel('minimumstock')" :class="!minimumStockVars.showPanel ? 'bg-primary opacity-50 text-light' : 'bg-light-emphasis'">
+        <div style="margin-left: 15px" class="table-box-title alt-table-title d-flex align-items-center px-2" type="button" @click="changePanel('minimumstock')" :class="!minimumStockVars.showPanel ? 'bg-secondary opacity-50 text-light' : 'bg-light-emphasis'">
             <p class="d-flex align-items-center box-title-text">
                 <IconsSpreadSheet class="me-1" width="25" height="25"/>
                 Níveis do almoxarifado
@@ -56,7 +56,7 @@
             <div class="d-flex align-items-center actions-btns bg-emphasis">
                 <ButtonsResponsiveNewItem class="res-action-btn mt-1" v-if="uploadReloader === 1 && !minimumStockVars.showPanel" />
                 <ButtonsResponsiveFilter class="res-action-btn mt-1"/>
-                <ButtonsEdition title="Selecione um item" :class="{'disabled opacity-50': itemsCheck.length === 0}"  class="res-action-btn mt-0" v-if="minimumStockVars.showPanel"/>
+                <ButtonsEdition title="Editar quantidade mínima" :class="{'disabled opacity-50': itemsCheck.length === 0}"  class="res-action-btn mt-0" v-if="minimumStockVars.showPanel"/>
                 <ButtonsResponsiveConfigure class="res-action-btn mt-1" v-if="!minimumStockVars.showPanel"/>
             </div>
             <span v-if="itemsLoad" class="position-sticky d-flex align-items-center table-searchbar" style="margin-top: 7px;">
@@ -113,8 +113,8 @@
                 <template v-slot:header>
                     <tr>
                         <th class="col-title py-2 border-top" scope="col"> <input @change="toggleSelectAll($event)" 
-                        :checked="selectedAllIndex[cacheIndex]"  value="" type="checkbox" class="form-check-input"> </th>
-                        <th class="col-title py-2 border-top" scope="col">Item</th>
+                        :checked="selectedAllIndex[cacheIndex]"  value="" type="checkbox" class="form-check-input"> <span v-if="!settingsStore.isMobile" class="fw-bold position-absolute ms-2 " style="margin-top:2px;">{{ itemsCheck.length }} selecionado(s)</span></th>
+                        <th class="col-title py-2 border-top bg-transparent" scope="col">Item</th>
                         <th class="col-title py-2 border-top" scope="col">Tipo Unitário</th>
                         <th class="col-title py-2 border-top" scope="col">Status</th>
                         <th class="col-title py-2 border-top" scope="col">Quantidade Mínima de Estoque</th>
@@ -138,7 +138,7 @@
                         <span>{{ item.type }}</span>
                     </th>
                     <th class="border bg-transparent" scope="row">
-                        <span class="p-2 fw-bold text-light rounded-1" :class="item.quantity > item.minimumStockLevel ? 'bg-secondary' : item.quantity === item.minimumStockLevel ? 'bg-dark-warning' : 'bg-dark-alert'">
+                        <span class="p-2 fw-bold text-light rounded-1 status-badge" :class="item.quantity > item.minimumStockLevel ? 'bg-secondary' : item.quantity === item.minimumStockLevel ? 'bg-dark-warning' : 'bg-dark-alert'">
                             <IconsWarning class="mb-1" v-if="item.quantity <= item.minimumStockLevel"/>
                             <IconsConfirm class="mb-1" v-else width="20px" height="20px"/>
                             {{ item.quantity > item.minimumStockLevel ? 'Estável' : item.quantity === item.minimumStockLevel ? 'Atenção' : 'Crítico' }}</span>
@@ -840,6 +840,12 @@ tr:hover p{
     }
     .table-searchbar{
         margin: 0px 20px 0px 20px;
+    }
+    .status-badge{
+        margin-right: 2px;
+        margin-left: 2px;
+        padding: 7px 3px 7px 3px !important;
+        font-size: 10px;
     }
 }
 </style>
