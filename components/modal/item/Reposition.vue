@@ -27,10 +27,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import { postCreateItem } from '../../services/items/itemsPOST';
-import { useStorageStore } from '../../stores/storage';
-import { usePopupStore } from '../../stores/popup';
-import { useRoute } from 'vue-router';
+import { useStorageStore } from '~/stores/storage';
+import { usePopupStore } from '~/stores/popup';
 const props = defineProps({
     itemName: {
         type: String,

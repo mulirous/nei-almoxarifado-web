@@ -27,12 +27,10 @@
 
 <script setup>
 import { ref } from 'vue';
-import { postCreateItem } from '../../services/items/itemsPOST';
-import { useStorageStore } from '../../stores/storage';
-import { usePopupStore } from '../../stores/popup';
-import { useRoute } from 'vue-router';
-import { patchItem } from '../../services/items/itemsPATCH';
-import { useUser } from '../../stores/user';
+import { useStorageStore } from '~/stores/storage';
+import { usePopupStore } from '~/stores/popup';
+import { patchItem } from '~/services/items/itemsPATCH';
+import { useUser } from '~/stores/user';
 const props = defineProps({
     items: {
         type: Array,

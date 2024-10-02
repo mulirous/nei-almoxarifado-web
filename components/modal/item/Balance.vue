@@ -1,4 +1,4 @@
-<template>
+    <template>
     <Modal id="itemBalance">
         <template v-slot:header>
                 <p class="header-title d-flex justify-content-start align-items-center fs-6">Atualizar Item</p>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { useStorageStore } from '../../stores/storage';
+import { useStorageStore } from '~/stores/storage';
 export default{
     data(){
         return{

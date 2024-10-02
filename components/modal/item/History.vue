@@ -37,11 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import { getRecordByItemId } from '../../services/record/recordGET';
-import { useUser } from '../../stores/user';
-import { useStorageStore } from '../../stores/storage';
+import { useUser } from '~/stores/user';
+import { useStorageStore } from '~/stores/storage';
 import { ref, computed, onUpdated, onMounted, defineProps } from 'vue';
-import { getItem } from '../../services/items/itemsGET';
+import { getItem } from '~/services/items/itemsGET';
 
 const store = useStorageStore();
 const userStore = useUser();

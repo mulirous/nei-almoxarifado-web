@@ -614,7 +614,7 @@ const requestsReq = async () => {
     pagination.value++;
     if(totalPages.value > 1){
         for(let i = 1; i < totalPages.value; i++){
-            const res = await getRequestByUser(userStore, userStore.id, pagination.value);
+            const res = await getRequestByUser(userStore, userStore.id, i);
             res.content.map((request) => {
             switch(request.status){
                 case 'PENDENTE':

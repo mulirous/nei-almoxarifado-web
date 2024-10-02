@@ -69,15 +69,15 @@ const pagination = ref(0);
 const requests = ref([]);
 
 const loadNotifications = async () => {
-  const res = await getRequestByStatus(userStore, 'pendente', pagination.value);
+  const res = await getRequestByStatus(userStore, 'PENDENTE', pagination.value);
   res.content.map((request) => {
     requests.value.push(request)
   })
 
   if(res.totalPages > 1){
-    for(let i = 0; i < res.totalPages; i++){
+    for(let i = 1; i < res.totalPages; i++){
       pagination.value++;
-      const res = await getRequestByStatus(userStore, 'pendente', pagination.value);
+      const res = await getRequestByStatus(userStore, 'PENDENTE', i);
       res.content.map((request) => {
           requests.value.push(request)
       })

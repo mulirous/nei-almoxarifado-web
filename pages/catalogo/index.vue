@@ -15,7 +15,7 @@
     <div class="sub-catalog bg-light mt-2 ps-2 pe-2">
         <h6 class="sub-catalog-title ps-2 d-flex align-items-center opacity-75">
             <IconsInformation class="me-2"/>
-            Descrição da página {{store.isReloadItems}}
+            Descrição da página 
         </h6>
         <p class="sub-catalog-text opacity-75">
             Nesta página temos todos os itens disponíveis do almoxarifado(itens esgotados devem ser cadastrados novamente). 
@@ -37,13 +37,13 @@
         </p>
     </div>
     <div class="table-titles position-absolute d-flex">
-        <div style="margin-left: 8px" class="table-box-title d-flex align-items-center px-2" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'bg-secondary opacity-50 text-light' : 'bg-light-emphasis'">
+        <div style="margin-left: 8px" class="table-box-title d-flex align-items-center px-2" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'bg-primary opacity-25 text-light' : 'bg-light-emphasis'">
             <p class="d-flex align-items-center box-title-text">
                 <IconsBox class="me-1" width="25" height="25"/>
                 Itens do almoxarifado
             </p>
         </div>
-        <div style="margin-left: 15px" class="table-box-title alt-table-title d-flex align-items-center px-2" type="button" @click="changePanel('minimumstock')" :class="!minimumStockVars.showPanel ? 'bg-secondary opacity-50 text-light' : 'bg-light-emphasis'">
+        <div style="margin-left: 15px" class="table-box-title alt-table-title d-flex align-items-center px-2" type="button" @click="changePanel('minimumstock')" :class="!minimumStockVars.showPanel ? 'bg-primary opacity-25 text-light' : 'bg-light-emphasis'">
             <p class="d-flex align-items-center box-title-text">
                 <IconsSpreadSheet class="me-1" width="25" height="25"/>
                 Níveis do almoxarifado
@@ -748,6 +748,7 @@ tr:hover p{
     opacity: 50%;
 }
 .progress-bar, .progress{
+    border-radius: 0px !important;
     transition: width 1.5s ease-in-out;
 }
 .form-check-input{

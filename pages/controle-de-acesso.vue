@@ -117,6 +117,12 @@ h6{
     font-weight: 400;
     color: rgb(51,51,51, 0.8);
 }
+@Media screen and (max-width: 988px){
+	.warning-text{
+		margin-top: 15%;
+		margin-bottom: 25%;
+	}
+}
 @media screen and (max-width: 676px){
 	.sub-catalog{
 		margin-right: 5%;

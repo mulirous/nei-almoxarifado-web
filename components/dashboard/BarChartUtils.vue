@@ -1,5 +1,5 @@
 <template>
-  <ModalAlmoReport :id="2" :data="{
+  <ModalReport :id="2" :data="{
     datasets: {
       mostItemsTime: [datasets.mostItemsTime[0].slice(0, 50), datasets.mostItemsTime[1].slice(0, 15)],
       mostItemsQuantity: [itemsQuantity.slice(0, 50), itemsQuantityByMonth],
@@ -13,11 +13,11 @@
   <div class="graph-header d-flex align-items-end justify-content-between section-title pt-2 mb-3 bg-light-background-header">
         <h5 class="ps-2 fw-bold">Distribuição das solicitações</h5>
         <div class="dropdown mb-1 mx-2 d-flex" @click.stop>
-            <button class="d-flex align-items-center graph-btn btn btn-outline-warning px-2 fw-bold text-nowrap " @click="toggleDataType">
+            <button class="d-flex align-items-center graph-btn btn btn-transparent px-2 fw-bold text-nowrap " @click="toggleDataType">
               <IconsLoop class="me-1" width="20px" height="20px"/>
               {{ currentDataTypeLabel }}
             </button>
-            <button class="d-flex align-items-center graph-btn btn btn-outline-secondary px-2 fw-bold dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="d-flex align-items-center graph-btn  btn btn-transparent px-2 fw-bold dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <IconsTimer class="me-1" width="20px" height="20px"/>
               Período
             </button>
@@ -40,7 +40,7 @@
                 </div>
               </li>
             </ul>
-            <button class="d-flex align-items-center graph-btn btn btn-outline-primary px-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#almoReport2" ria-expanded="false">
+            <button class="d-flex align-items-center graph-btn btn btn-transparent 91847128 px-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#almoReport2" ria-expanded="false">
               <IconsRequest class="me-1" width="20px" height="20px"/>
               Relatório
             </button>

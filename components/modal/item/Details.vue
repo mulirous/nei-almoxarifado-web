@@ -79,12 +79,9 @@
 </template>
 
 <script>
-import { useStorageStore } from '../../stores/storage';
-import { inject } from 'vue';
-import { useUser } from '../../stores/user';
-import { getRecordByItemId } from '../../services/record/recordGET';
-import { usePopupStore } from '../../stores/popup';
-
+import { useStorageStore } from '~/stores/storage';
+import { useUser } from '~/stores/user';
+import { getRecordByItemId } from '~/services/record/recordGET';
 export default {
     data() {
         return {

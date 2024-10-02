@@ -47,9 +47,9 @@
 
 <script>
 import { usePopupStore } from '~/stores/popup';
-import { sipacHandeling } from '../../composables/inputHandler';
-import { useStorageStore } from '../../stores/storage';
-import { useSettingsStore } from '../../stores/settings';
+import { sipacHandeling } from '~/composables/inputHandler';
+import { useStorageStore } from '~/stores/storage';
+import { useSettingsStore } from '~/stores/settings';
 export default{
     data() {
         return{

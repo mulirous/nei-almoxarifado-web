@@ -36,32 +36,7 @@ const toggleDropdown = (dropdown_id) => {
     dropdownStates.value[dropdown_id+1] = false
 }
 
-const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    
-    reader.onload = async (e) => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[firstSheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        const tableHeaders = jsonData[0];
-        const tableData = jsonData.slice(1);
-        for(let i = 0; i < tableData.length; i++){
-            console.log(tableData[i][1], tableData[i][2], tableData[i][4] < 0 ? 0 : tableData[i][4])
-            try{
-                if(tableData[i][4] > 0){
-                    let res = await postCreateItem(userStore, tableData[i][1], '', tableData[i][4], tableData[i][2]);
-                }
-            }catch(err){
-                console.log(err)
-            }
-        }
-    };
-    reader.readAsArrayBuffer(file);
-    store.isReloadItems = true;
-}
+
 
 
 const setItemsFilter = inject('setItemsFilter')
