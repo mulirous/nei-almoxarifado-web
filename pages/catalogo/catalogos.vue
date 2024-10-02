@@ -32,20 +32,21 @@
           </CardsImageCard>
         </div>
     </div>
+    <Carousel />
 </div>
 </template>
 
 <script setup>
-import { inject } from 'vue';
+// import { inject } from 'vue';
 
-const setpageTitle = inject('setpageTitle');
+// const setpageTitle = inject('setpageTitle');
 
 
-const sendDataToParent = () => {
-    const data = "Catálogos";
-    setpageTitle(data);
-};
-sendDataToParent();
+// const sendDataToParent = () => {
+//     const data = "Catálogos";
+//     setpageTitle(data);
+// };
+// sendDataToParent();
 </script>
 
 <style scoped>

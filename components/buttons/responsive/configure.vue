@@ -7,12 +7,12 @@
         </button>
         <ul @click.stop class="dropdown-menu large-menu py-0">
             <a class="text-decoration-none" href="/catalogo/importar-tabelas">
-                <li type="button" class="dropdown-item d-flex py-2 justify-content-between align-items-center mb-0 fw-bold text-dark-emphasis" style="padding-bottom: 4px;">
-                    importar tabelas
+                <li type="button" class="dropdown-item d-flex py-2 justify-content-between align-items-center mb-0 fw-medium text-dark-emphasis" style="padding-bottom: 4px;">
+                    Importar tabela
                 </li>
             </a>
-            <li type="button" @click="store.isEditionMode = !store.isEditionMode" class="dropdown-item form-check d-flex py-2 mb-0 align-items-center">
-                <span class="me-4 pe-2">habilitar correções</span>
+            <li type="button" @click="store.isEditionMode = !store.isEditionMode" class="dropdown-item form-check d-flex py-2 mb-0 align-items-center justify-content-between">
+                <span class="me-4 pe-2 fw-medium">Habilitar edição </span>
                 <input v-model="store.isEditionMode" class="p-2 mb-1 form-check-input" value="" id="editCheck" type="checkbox">
             </li>
         </ul>   

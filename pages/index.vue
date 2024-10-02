@@ -67,11 +67,11 @@
             </button>
             <ul class="dropdown-menu py-0">
               <li @click="toggleAccounts()" type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between text-dark-emphasis">
-                <span class="fw-bold">Mostrar contas desativas</span>
+                <span class="fw-medium">Mostrar contas desativas</span>
                 <input type="checkbox" style="margin-bottom: 2px" class="form-check-input ms-2 border-1" v-model="showDisabledAccounts">
               </li>
               <li @click="showDisableActions = !showDisableActions" type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between text-dark-emphasis">
-                <span class="fw-bold">Habilitar deleção de contas</span>
+                <span class="fw-medium">Habilitar deleção de contas</span>
                 <input type="checkbox" style="margin-bottom: 2px" class="form-check-input ms-2 border-1" v-model="showDisableActions">
               </li>
             </ul>
