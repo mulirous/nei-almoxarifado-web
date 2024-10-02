@@ -68,7 +68,7 @@ function checkIfMobile() {
 /* Para Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) white; /* Fundo branco no Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.2) white; 
 }
 
 *::-moz-scrollbar-thumb:hover {

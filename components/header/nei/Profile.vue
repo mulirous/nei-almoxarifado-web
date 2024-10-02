@@ -237,7 +237,7 @@ p{
 }
 @media screen and (max-width: 600px){
   .user-text {
-    max-width: 180px;
+    max-width: 205px;
   }
   .notification-menu{
     min-width: 200px;

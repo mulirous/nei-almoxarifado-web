@@ -263,19 +263,19 @@ const chartData = ref({
   datasets: [
     {
       type: 'bar',
-      label: 'Quantidade de itens solicitados',
+      label: 'Itens solicitados',
       backgroundColor: '#0B3B69',
       data: datasets.requests[currentIndex.value]
     },
     {
       type: 'bar',
-      label: 'Quantidade de itens consumidos',
+      label: 'Itens consumidos',
       backgroundColor: '#388E3C',
       data: datasets.requestsAccepted[currentIndex.value]
     },
     {
       type: 'bar',
-      label: 'Quantidade de itens recusados',
+      label: 'Itens recusados',
       backgroundColor: '#B71C1C',
       data: datasets.requestsRejected[currentIndex.value]
     },
@@ -303,7 +303,7 @@ const chartOptions = ref({
             const width = context.chart.width;
             if (width > 1000) return 14;
              if (600 < width && width < 1000) return 12;
-            else if (width < 500) return 9;
+            else if (width < 500) return 10;
             return 10;
           }
         }
@@ -326,21 +326,21 @@ const changeLabel = (labelType, index) => {
         {
           ...chartData.value.datasets[0], 
           type: 'bar',
-          label: 'Quantidade de itens solicitados',
+          label: 'Itens solicitados',
           backgroundColor: '#0B3B69',
           data: datasets.requests[currentIndex.value]
         },
         {
           ...chartData.value.datasets[1],
           type: 'bar',
-          label: 'Quantidade de itens consumidos',
+          label: 'Itens consumidos',
           backgroundColor: '#388E3C',
           data: datasets.requestsAccepted[currentIndex.value]
         },
         {
           ...chartData.value.datasets[2],
           type: 'bar',
-          label: 'Quantidade de itens recusados ao consumo',
+          label: 'Itens recusados',
           backgroundColor: '#B71C1C',
           data: datasets.requestsRejected[currentIndex.value]
         },

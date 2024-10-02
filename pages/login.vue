@@ -6,7 +6,7 @@
 		</Head>
 	</div>
     <LoadersPageLoading :isLoading="loading" class="loader"/>
-	<div class="d-flex justify-content-center  bg-primary auth-container overflow-hidden">
+	<div class="d-flex justify-content-center bg-primary auth-container overflow-hidden">
 		<div class="container-fluid login-container d-flex justify-content-center" :class="{'login-movement': switchState}" :style="{ 'border-radius': delayedSwitchState ? '0px 8px 8px 0px' : '8px 0px 0px 8px'}">
 			<div :style="{height: switchState ? '100%' : '0%', width: switchState ? '100%' : '0%'}" class="bg-dark-emphasis position-absolute mobile-form"></div>
 			<div class="login-content" :class="switchState ? 'leave-text' :'return-text'">

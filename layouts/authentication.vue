@@ -1,7 +1,7 @@
 <template>
-    <div id="authentication">
-        <div class="d-block bg-dark-transparent">
-            <div class="d-flex justify-content-center align-items-center">
+    <div id="authentication" >
+        <div class="d-flex justify-content-center align-items-center bg-dark-transparent">
+            <div class="container-fluid d-flex justify-content-center w-100 mb-5 pb-5">
                 <slot />
             </div>
             <div class="d-flex align-items-center justify-content-center brand-box me-3">

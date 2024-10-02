@@ -10,7 +10,7 @@
             <form @submit.prevent="generateReport">
                 <div class="d-block mb-3">
                     <div>
-                        <p class="fw-medium text-dark-emphasis">
+                        <p class="fw-bold text-dark-emphasis">
                             Selecione os dados e período temporal que serão formatados na geração do relatório
                         </p>
                     </div>
@@ -19,7 +19,7 @@
                         <div class="d-flex align-items-center justify-content-between my-2">
                             <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" id="allRequests" v-model="reportOptions.dataset[0]">
-                                <label class="form-check-label" for="allRequests">
+                                <label class="form-check-label " for="allRequests">
                                     Todas as solicitações 
                                 </label>
                             </div>
@@ -593,6 +593,8 @@ const generateReport = async () => {
 }
 .form-check-label{
     font-size: 13px;
+    color: rgba(51,51,51,1);
+    font-weight: bold;
 }
 .close {
     position: relative;

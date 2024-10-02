@@ -99,7 +99,7 @@
                 </th>
                 <th :class="{'user-disabled': !user.active}" class="text-center table-cell user-actions pt-2" scope="row" width="5%">
                   <div class="position-sticky d-flex justify-content-center">
-                    <button v-if="user.active === true" title="Alterar Encargo" @click="BindUser.email = user.email" data-bs-toggle="modal" data-bs-target="#actionConfirm" class="ms-1 me-0 table-btn d-flex align-items-center justify-content-center btn btn-secondary">
+                    <button v-if="user.active === true && user.id !== userStore.id" title="Alterar Encargo" @click="BindUser.email = user.email" data-bs-toggle="modal" data-bs-target="#actionConfirm" class="ms-1 me-0 table-btn d-flex align-items-center justify-content-center btn btn-secondary">
                       <IconsBarFilter width="16px" height="16px"/> 
                     </button>
                     <a title="Perfil" :href="`/perfil?userId=${user.id}`" :route="`/perfil/${user.id}`" class="ms-1 me-0 table-btn d-flex align-items-center justify-content-center btn btn-primary">
@@ -210,12 +210,12 @@
         </button>
       </template>
       <template v-slot:body>
-        <p class="fw-medium text-center">Como administrador você tem permissões especiais para desativar a conta de qualquer usuário comum, para melhor controle e gestão de quem tem acesso ao sistema.</p>
-        <p class="fw-bold text-center">Deseja realmente desativar esta conta?</p>
+        <p class="fw-bold text-center fs-5">Deseja realmente desativar essa conta?</p>
+        <p class="fw-bold text-dark-emphasis text-center">Como administrador você tem permissões especiais para desativar a conta de qualquer usuário comum, esta ação não pode ser desfeita e o usuário não terá mais acesso ao sistema.</p>
       </template>
       <template v-slot:footer>
         <div class="container-fluid d-flex justify-content-end align-items-center">
-          <button type="button" @click="deleteAccount()" class="btn btn-secondary inset-shadow text-light mx-1 fw-bold" data-bs-dismiss="modal">Desativar</button>
+          <button type="button" @click="deleteAccount()" class="btn btn-dark-success inset-shadow text-light mx-1 fw-bold" data-bs-dismiss="modal">Confirmar</button>
           <button type="button" class="btn btn-light-alert inset-shadow text-light mx-1 fw-bold" data-bs-dismiss="modal">Cancelar</button>
         </div>
       </template>
@@ -223,7 +223,7 @@
     <ModalActionConfirm>
       <template v-slot:text>
         <div class="d-flex align-items-center justify-content-center">
-          <p>Para alterar o Encargo do usuário você deve selecionar o seu novo encargo e confirmar a ação. </p>
+          <p class="fw-bold text-dark-emphasis text-center">Para alterar o Encargo do usuário você deve selecionar o seu novo encargo e confirmar a ação. </p>
         </div>
         <select v-model="BindUser.role" class="form-select" aria-label="Default select">
           <option disabled selected>Selecione o Encargo</option>

@@ -392,7 +392,7 @@
         </button>
     </template>
     <template v-slot:body>
-      <p class="fw-bold text-center fs-5">Deseja realmente desativar a sua conta?</p>
+      <p class="fw-bold text-center fs-5">Deseja realmente excluir a sua conta?</p>
       <p class="fw-bold text-dark-emphasis text-center">Ao excluir você não terá mais acesso ao sistema por meio dela, porém seus dados ainda ficarão
          disponíveis para os administradores como históricos e registros.</p>
     </template>

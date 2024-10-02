@@ -7,6 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     if(to.path === '/login' || to.path === '/cadastro' || to.path === '/recuperar-senha' || to.path === '/atualizar-senha'){
         return
     }
+    
     const userStore = useUser();
     if(userStore.role === 'USER'){
         if(userStore.token == ''){
