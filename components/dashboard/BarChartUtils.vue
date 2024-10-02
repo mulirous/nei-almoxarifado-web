@@ -46,14 +46,14 @@
             </button>
         </div>
   </div>
-  <div class="me-3 fw-bold mt-1 opacity-75 position-absolute" style="right: 15px">
+  <div class="me-3 fw-bold opacity-75 position-absolute ms-2">
     <p>Período: {{ monthSelected === -1 ? 'anual' : `${months[monthSelected-1]}` }}</p>
   </div>
   <div>
     <div class="d-flex justify-content-center z-5">
       <LoadersLoading class="position-absolute p-5 mt-5 mb-0"/>
     </div>
-    <Chart v-if="chartData.labels.length > 0" :type="'pie'" class="chart-graph" :data="chartData" :options="chartOptions" />
+    <Chart v-if="chartData.labels.length > 0" :type="'pie'" class="chart-graph" :data="chartData" :options="chartOptions"  />
     <div v-else class="d-flex justify-content-center mb-5">
       <p class="fw-bold fs-5 opacity-75 py-5 mb-5">Nenhum dado encontrado</p>
     </div>
@@ -61,13 +61,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { Bar, Line } from 'vue-chartjs';
 import { useUser } from '../../stores/user.ts';
+import { useSettingsStore } from '../../stores/settings.ts';
 import { useStorageStore } from '../../stores/storage.ts';
-import { getRequestByItem, getRequestByUser, getRequests } from '../../services/requests/requestsGET.ts';
-import { getItems } from '../../services/items/itemsGET.ts';
-import { getUsers } from '../../services/users/userGET.ts';
+import { getRequests } from '../../services/requests/requestsGET.ts';
 import { Chart } from 'vue-chartjs';
 import {
   Chart as ChartJS,
@@ -100,6 +99,7 @@ ChartJS.register(
 
 const userStore = useUser();
 const store = useStorageStore();
+const settingsStore = useSettingsStore();
 
 const dropdownState = ref(false);
 const toggleDropdown = () => {
@@ -245,7 +245,7 @@ const currentDataType = ref('mostItems');
 const currentDataTypeLabel = ref('Distribuição: Itens');
 
 const chartData = ref({
-  labels: labels[currentDataType.value][0].slice(0, 30),
+  labels: labels[currentDataType.value][0].slice(0, 20),
   datasets: [
     {
       label: currentLabelName,
@@ -254,7 +254,7 @@ const chartData = ref({
   "#2E4053", "#2980B9", "#76D7C4", "#239B56", "#D68910",
   "#D35400", "#7B241C", "#F4D03F", "#A569BD", "#E74C3C"
 ],
-       data: datasets[currentDataType.value+'Time'][0].slice(0, 30),
+       data: datasets[currentDataType.value+'Time'][0].slice(0, 20),
     },
   ],
 });
@@ -264,11 +264,13 @@ const chartOptions = ref({
   maintainAspectRatio: false,
   plugins: {
     legend: {
+      display: settingsStore.isMobile ? false : true,
       position: 'bottom',
       align: 'center',
       labels: {
-        padding: 20
-      }
+        boxWidth: 15,
+        boxHeight: 10,
+      },
     },
   },
 });
@@ -279,7 +281,7 @@ const changeLabel = (monthIndex) => {
     currentIndex.value = 0;
     chartData.value = {
       ...chartData.value,
-      labels: labels[currentDataType.value][0].slice(0, 30),
+      labels: labels[currentDataType.value][0].slice(0, 20),
       datasets: [
         {
           ...chartData.value.datasets[0],
@@ -309,11 +311,8 @@ const toggleDataType = () => {
   changeLabel(monthSelected);
 };
 
+
 </script>
-
-
-
-
 <style scoped>
 .graph-loader{
   height: 100px;
@@ -332,7 +331,7 @@ h5{
   font-size: 13px;
 }
 .chart-graph {
-  height: 350px;
+  height: 300px !important;
 }
 li{
     list-style-type: none;
@@ -385,17 +384,20 @@ li{
 }
 
 @media screen and (max-width: 820px){
-    .action-btn{
-        font-size: 12px;
-    }
-    .large-menu{
-        padding: 0;
-        width: 120px !important;
-    }
-    .action-icon{
-        width: 15px;
-        height: 15px;
-    }
+  .action-btn{
+      font-size: 12px;
+  }
+  .large-menu{
+      padding: 0;
+      width: 120px !important;
+  }
+  .action-icon{
+      width: 15px;
+      height: 15px;
+  }
+  .chart-graph{
+    height: 420px !important;
+  }
 }
 @media screen and (max-width: 706px){
   .graph-header{

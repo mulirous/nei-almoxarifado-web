@@ -66,9 +66,13 @@
               <IconsSettingsDots class="me-1 opacity-75" width="28" height="28"/>
             </button>
             <ul class="dropdown-menu py-0">
-              <li @click="toggleAccounts()" type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-center text-dark-emphasis">
+              <li @click="toggleAccounts()" type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between text-dark-emphasis">
                 <span class="fw-bold">Mostrar contas desativas</span>
                 <input type="checkbox" style="margin-bottom: 2px" class="form-check-input ms-2 border-1" v-model="showDisabledAccounts">
+              </li>
+              <li @click="showDisableActions = !showDisableActions" type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between text-dark-emphasis">
+                <span class="fw-bold">Habilitar deleção de contas</span>
+                <input type="checkbox" style="margin-bottom: 2px" class="form-check-input ms-2 border-1" v-model="showDisableActions">
               </li>
             </ul>
           </div>
@@ -105,7 +109,7 @@
                     <a title="Perfil" :href="`/perfil?userId=${user.id}`" :route="`/perfil/${user.id}`" class="ms-1 me-0 table-btn d-flex align-items-center justify-content-center btn btn-primary">
                       <IconsLowProfile width="16px" height="16px"/>
                     </a>
-                    <button v-if="user.active === true" title="Anular Conta" @click="BindUser.id = user.id" data-bs-toggle="modal" data-bs-target="#removeUser" class="ms-1 me-0 table-btn d-flex align-items-center justify-content-center btn btn-dark-alert">
+                    <button v-if="user.active === true && showDisableActions" title="Anular Conta" @click="BindUser.id = user.id" data-bs-toggle="modal" data-bs-target="#removeUser" class="ms-1 me-0 table-btn d-flex align-items-center justify-content-center btn btn-dark-alert">
                       <IconsReject width="16px" height="16px"/>
                     </button>
                   </div>
@@ -273,6 +277,7 @@ const BindUser = ref({
   role: null
 });
 const showDisabledAccounts = ref(false);
+const showDisableActions = ref(false);
 
 const users = ref({ content: [], totalElements: 0}); 
 const records = ref({ content: [] });
@@ -300,8 +305,9 @@ const fetchUsers = async () => {
         for(let j = 0; j < res.pageElements; j++){
           if (res.content[j].id == userStore.id) {
             res.content[j].name = "Eu";
+            users.value.content.unshift(res.content[j])
           }
-          if(res.content[j].active === true || (res.content[j].active === false && showDisabledAccounts.value === true)){
+          else if(res.content[j].active === true || (res.content[j].active === false && showDisabledAccounts.value === true)){
             users.value.content.push(res.content[j]);
           }
         }

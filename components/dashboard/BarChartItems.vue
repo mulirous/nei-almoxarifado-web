@@ -32,7 +32,7 @@
             </ul>
       </div>
   </div>
-  <div class="d-flex justify-content-end position-absolute me-3 mt-3 fw-bold opacity-75" style="right: 2%;">
+  <div class="d-flex justify-content-end position-absolute me-3 mt-2 fw-bold opacity-75 ms-4">
     <p>Período: {{ monthSelected === -1 ? 'anual' : `${labels.month[monthSelected]}` }}</p>
   </div>
   <div>
