@@ -1,19 +1,19 @@
 <template>
     <div class="dropdown">
-        <button @mouseover="toolTip = true" @mouseout="toolTip = false" @focusin="colorFocus" @focusout="colorUnfocus" class="filter-btn action-btn d-flex btn btn-outline-primary mx-1 px-2 mt-1 text-nowrap" 
+        <button @mouseover="toolTip = true" @mouseout="toolTip = false" @focusin="colorFocus" @focusout="colorUnfocus" class="filter-btn action-btn d-flex align-items-center btn btn-outline-primary mx-1 px-2 mt-1 text-nowrap" 
         data-bs-toggle="dropdown" data-bs-close="outside" data-bs-offset="0,2=" aria-expanded="false">
             Mais ações
-            <IconsSettings class="mx-1" width="1.5em" height="1.5em"/>
+            <IconsSettings class="mx-1" width="1.3em" height="1.3em"/>
         </button>
         <ul @click.stop class="dropdown-menu large-menu py-0">
             <a class="text-decoration-none" href="/catalogo/importar-tabelas">
                 <li type="button" class="dropdown-item d-flex py-2 justify-content-between align-items-center mb-0 fw-medium text-dark-emphasis" style="padding-bottom: 4px;">
-                    Importar tabela
+                    Importar tabelas
                 </li>
             </a>
             <li type="button" @click="store.isEditionMode = !store.isEditionMode" class="dropdown-item form-check d-flex py-2 mb-0 align-items-center justify-content-between">
                 <span class="me-4 pe-2 fw-medium">Habilitar edição </span>
-                <input v-model="store.isEditionMode" class="p-2 mb-1 form-check-input" value="" id="editCheck" type="checkbox">
+                <input v-model="store.isEditionMode" class="p-2  form-check-input" value="" id="editCheck" type="checkbox">
             </li>
         </ul>   
     </div>  
@@ -77,7 +77,7 @@ const sendDataToParent = (filter, isInverted) => {
 
 <style scoped>
 .large-menu{
-    width: 175px;
+    width: 155px;
     min-width: 110px;
 }
 li{
@@ -88,7 +88,7 @@ li{
     color: rgb(51,51,51, 0.9);
     font-weight: 600;
     margin: 0px;
-    padding: 10px !important;
+    padding: 7px !important;
 }
 .form-check-input{
     border: 1px solid rgb(0, 0, 0, 0.3);

@@ -9,7 +9,7 @@
         <div :class="{'d-none': !settingsStore.isMobile}" class="d-flex align-items-center text-light me-1" type="button" tabindex="-1" data-bs-target="#scrollableModal" data-bs-toggle="modal">
           <IconsSearchGlass class="mobile-search text-light" height="26px" style="margin-bottom: 0px;"/>
         </div>
-        <ThemeSwitch v-if="!settingsStore.isMobile" class="me-2" style="margin-top: 8px;"/>
+        <ThemeSwitch v-if="!settingsStore.isMobile" class="me-2" style="margin-top: 7px;"/>
         <Profile class="mt-1"/>
       </div>     
     </div>

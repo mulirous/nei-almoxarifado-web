@@ -8,7 +8,7 @@
     <div class="container">
 		<!-- TODO: transformar em tabela com linhas !-->
 		<div class="sub-catalog bg-light mb-4 mt-1 ps-2 pe-2">
-        	<h6 class="sub-catalog-title ps-2 d-flex align-items-center opacity-75">
+        	<h6 class="sub-catalog-title ps-2 d-flex align-items-center opacity-75 fw-bold">
         	    <IconsInformation class="me-2"/>
         	    Descrição da página 
         	</h6>

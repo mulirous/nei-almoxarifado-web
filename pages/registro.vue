@@ -9,7 +9,7 @@
 <div class="table-container d-block mt-2">
   <button class="d-none searching-btn" data-bs-toggle="modal" data-bs-target="#itemDetailing"></button>
   <div class="sub-catalog bg-light my-1 ps-2 pe-2">
-        <h6 class="sub-catalog-title ps-2 d-flex align-items-center opacity-75">
+        <h6 class="sub-catalog-title ps-2 d-flex align-items-center opacity-75 fw-bold">
             <IconsInformation class="me-2"/>
             Descrição da página
         </h6>

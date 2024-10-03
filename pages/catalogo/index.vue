@@ -13,28 +13,56 @@
 <div class="table-container d-block mt-2">
     <button v-if="!searchStore.itemSearch.searching" class="d-none searching-btn" data-bs-toggle="modal" data-bs-target="#itemDetailing"></button>
     <div class="sub-catalog bg-light mt-2 ps-2 pe-2">
-        <h6 class="sub-catalog-title ps-2 d-flex align-items-center opacity-75">
+        <h6 class="sub-catalog-title ps-2 d-flex align-items-center opacity-75 fw-bold">
             <IconsInformation class="me-2"/>
             Descrição da página 
         </h6>
-        <p class="sub-catalog-text opacity-75">
-            Nesta página temos todos os itens disponíveis do almoxarifado(itens esgotados devem ser cadastrados novamente). 
-            Ademais, o cadastro de novos itens e reposição da quantidade de algum item já existente é feito pelo botão 
-            <span class="border-bottom border-dark-success pb-1 text-nowrap">
-                Adicionar <IconsPlus style="margin-bottom: 0px;"  width="18px" height="18px"/>
-            </span>
-        </p>
-        <br>
-        <p class="sub-catalog-text opacity-75">
-            O botão
-            <span class="border-bottom border-primary pb-1">
-                Filtro <IconsFilter style="margin-bottom: 0px;"  width="18px" height="18px"/>
-            </span>
-            permite alterar a forma como os itens são exibidos. 
-            Com ele, você pode ordenar os itens por diferentes critérios, 
-            como data de criação (do mais recente ao mais antigo ou vice-versa), 
-            nome e quantidade de itens em estoque.
-        </p>
+        <div v-if="!minimumStockVars.showPanel">
+            <p class="sub-catalog-text opacity-75 mb-2">
+                Nesta página temos todos os itens disponíveis do almoxarifado(itens esgotados devem ser cadastrados novamente).
+            </p>
+            <ul class="opacity-75 list-group">
+                <li class="list-group-item">
+                    <span class="border-bottom border-dark-success pb-1 text-nowrap">
+                        <b>Adicionar</b> <IconsPlus style="margin-bottom: 0px;" class="mb-1" width="18px" height="18px"/>
+                    </span>: Nele que você irá cadastrar novos itens, e também pode repor a quantidade de itens já existentes(colocando os dados exatos do item).
+                </li>
+                <li class="list-group-item">
+                    <span class="border-bottom border-secondary pb-1 text-nowrap">
+                        <b>Filtro</b> <IconsFilter style="margin-bottom: 0px;" class="mb-1"  width="18px" height="18px"/>
+                    </span>: Aqui pode filtrar o carregamento dos itens em ordem ascendente ou decrescente ao escolher o tipo de filtro.
+                </li>
+                <li class="list-group-item">
+                    <span class="border-bottom border-secondary pb-1 text-nowrap">
+                        <b>Mais Ações</b> <IconsSettings style="margin-bottom: 0px;" class="mb-1"  width="18px" height="18px"/>
+                    </span>: Oferece a opção de importar tabelas para cadastrar itens e também a função de habilitar correções de erros nos itens cadastrados.
+                </li>
+            </ul>
+        </div> 
+        <div v-else>
+            <p class="sub-catalog-text opacity-75 mb-2">
+                Nesta página temos os níveis de itens do almoxairado, quando um item estiver abaixo do níveis mínimo definido o sistema envia um email para o administrador.
+            </p>
+            <ul class="opacity-75 list-group">
+                <li class="list-group-item d-flex align-items-center">
+                    <input class="me-2 p-0 border-0" style="width: 20px; height: 15px;" type="color" value="#1f69b1" disabled>
+                    <span>Quantidade atual do item que está acima da quantidade mínima.</span>
+                </li>
+                <li class="list-group-item d-flex align-items-center">
+                    <input class="me-2 p-0 border-0" style="width: 20px; height: 15px;" type="color" value="#FED51E" disabled>
+                    <span>Quantidade mínima de estoque definida.</span>
+                </li>
+                <li class="list-group-item d-flex align-items-center">
+                    <input class="me-2 p-0 border-0" style="width: 20px; height: 15px;" type="color" value="#B71C1C" disabled>
+                    <span>Quantidade atual do item que está abaixo da quantidade mínima.</span>
+                </li>
+                <li class="list-group-item">
+                    <span class="border-bottom border-secondary pb-1 text-nowrap">
+                        <b>Editar</b> <IconsSettings style="margin-bottom: 0px;" class="mb-1"  width="18px" height="18px"/>
+                    </span>: Selecionado os itens, clicando nesse botão você poderá definir a quantidade mínima de estoque deles.
+                </li>
+            </ul>
+        </div>
     </div>
     <div class="table-titles position-absolute d-flex">
         <div style="margin-left: 8px" class="table-box-title d-flex align-items-center px-2" type="button" @click="changePanel('items')" :class="minimumStockVars.showPanel ? 'bg-primary opacity-25 text-light' : 'bg-light-emphasis'">

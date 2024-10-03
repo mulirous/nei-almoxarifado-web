@@ -7,9 +7,7 @@ export const useApiFetch = (req, opts) => {
             baseURL: config.public.baseURL, 
             ...opts,
             onResponseError({ response }) {
-                if(response.status === 401){
-                    navigateTo('/login')
-                }
+                navigateTo('/login')
             }
         })
 }

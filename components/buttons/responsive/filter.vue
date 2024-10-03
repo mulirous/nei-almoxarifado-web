@@ -1,16 +1,16 @@
 <template>
     <div class="dropdown" >
     <button v-if="settingsStore.isMobile" @focusin="colorFocus" @focusout="colorUnfocus" 
-        class="dropdown-principal mt-1 filter-btn action-btn d-flex btn btn-outline-primary mx-1 px-2"  
+        class="dropdown-principal mt-1 filter-btn action-btn d-flex align-items-center btn btn-outline-primary mx-1 px-2"  
         data-bs-toggle="dropdown" data-bs-close="outside" data-bs-offset="0,2" aria-expanded="false">
         Filtro
-        <IconsFilter class="mx-1" width="1.5em" height="1.5em"/>
+        <IconsFilter class="mx-1" width="1.3em" height="1.3em"/>
     </button>
     <button v-else @focusin="colorFocus" @focusout="colorUnfocus" 
-        class="dropdown-principal mt-1 filter-btn action-btn d-flex btn btn-outline-primary mx-1 px-2"  
+        class="dropdown-principal mt-1 filter-btn action-btn d-flex align-items-center btn btn-outline-primary mx-1 px-2"  
         data-bs-toggle="dropdown" data-bs-close="outside" data-bs-offset="0,2" aria-expanded="false">
         Filtro
-        <IconsFilter class="mx-1" width="1.5em" height="1.5em"/>
+        <IconsFilter class="mx-1" width="1.3em" height="1.3em"/>
     </button>
         <ul @click.stop class="dropdown-menu py-0 large-menu">
             <!--

@@ -442,6 +442,9 @@ h5{
   font-weight: 300;
   color: rgb(51,51,51, 0.8);
 }
+.dropdown-item span{
+  font-size: 13px;
+}
 .summary-text{
   width: 50%;
   text-overflow: ellipsis;

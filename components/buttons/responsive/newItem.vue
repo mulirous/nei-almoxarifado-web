@@ -1,21 +1,12 @@
 <template>
    <div>
-    <button @mouseover="toolTip = true" @mouseout="toolTip = false" @focusin="colorFocus" 
-    @focusout="colorUnfocus" class="new-btn action-btn btn-outline-dark-success justify-content-end d-flex btn mx-1 px-2 mt-1" data-bs-toggle="modal" data-bs-target="#itemRegistration" aria-expanded="false">
+    <button title="Cadastrar item" @focusin="colorFocus" 
+    @focusout="colorUnfocus" class="new-btn action-btn btn-outline-dark-success justify-content-end align-items-center d-flex btn mx-1 px-2 mt-1" data-bs-toggle="modal" data-bs-target="#itemRegistration" aria-expanded="false">
         Adicionar
-        <IconsPlus class="mx-1" width="1.5em" height="1.5em"/>
+        <IconsPlus class="mx-1" width="1.3em" height="1.3em"/>
     </button>   
     </div>  
 </template>
-<!--
-<template>
-    <TooltipsRectangular class="d-flex justify-content-center align-items-end ms-4 mt-2" :toolTipState="toolTip" :toolTipText="'Cadastro de Novos Itens'"/>    
-    <button @mouseover="toolTip = true" @mouseout="toolTip = false" @focusin="colorFocus" @focusout="colorUnfocus" class="new-btn action-btn btn-outline-ligth text-dark-emphasis justify-content-end d-flex btn mx-1 px-2" data-bs-toggle="modal" data-bs-target="#itemRegistration" aria-expanded="false">
-        Adicionar
-        <IconsPlus class="mx-1" width="1.5em" height="1.5em"/>
-    </button>
-</template>
--->
 
 <style scoped>
 .action-btn{
