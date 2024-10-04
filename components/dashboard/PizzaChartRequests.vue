@@ -53,7 +53,7 @@
   </div>
   <div :style="{'width': isLegend ? '280px' : '0px'}" class="position-absolute d-flex align-items-center text-light legend" style="border-radius: 0px 0px 0px 7px;z-index: 0;  background-color: rgba(90, 90,90,0.8);">
     <ul :style="{'opacity': isLegend ? '100%' : '0%'}" class="list-group ms-2" style="transition: opacity 0.6s ease-in-out;">
-      <li v-for="(label, index) in labels[currentDataType][0].slice(0, 20)" :key="index" class="list-item bg-transparent d-flex align-items-center fw-medium text-nowrap"><input disabled class="border p-0 me-2 my-1" style="width: 25px; height: 20px;" type="color" :value="`${backgroundColor[index]}`">  {{ label }}</li>
+      <li v-for="(label, index) in labels[currentDataType][0].slice(0, 20)" :key="index" class="list-item border-0 bg-transparent d-flex align-items-center fw-medium text-nowrap"><input disabled class="border p-0 me-2 my-1" style="width: 25px; height: 20px;" type="color" :value="`${backgroundColor[index]}`">  {{ label }}</li>
     </ul>
   </div>
   <div class="bg-light-emphasis py-2 mx-3 mb-4" style="border: 1px solid rgba(51,51,51,0.2); border-top: 0px; border-radius: 0px 0px 8px 8px;">
