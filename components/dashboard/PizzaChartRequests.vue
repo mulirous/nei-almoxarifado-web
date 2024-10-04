@@ -10,50 +10,58 @@
       mostItems: [labels.mostItems[0].slice(0, 50), labels.mostItems[1].slice(0, 15)], 
       mostRequesters: [labels.mostRequesters[0].slice(0, 50), labels.mostRequesters[1].slice(0, 15)]
       }}"/>
-  <div class="graph-header d-flex align-items-end justify-content-between section-title pt-2 mb-3 bg-light-background-header">
+  <div class="align-items-end justify-content-between section-title pt-2 mb-2 bg-light-background-header">
         <h5 class="ps-2 fw-bold">Distribuição das solicitações</h5>
-        <div class="dropdown mb-1 mx-2 d-flex" @click.stop>
-            <button class="d-flex align-items-center graph-btn btn btn-transparent px-2 fw-bold text-nowrap " @click="toggleDataType">
-              <IconsLoop class="me-1" width="20px" height="20px"/>
-              {{ currentDataTypeLabel }}
-            </button>
-            <button class="d-flex align-items-center graph-btn  btn btn-transparent px-2 fw-bold dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <IconsTimer class="me-1" width="20px" height="20px"/>
-              Período
-            </button>
-            <ul class="dropdown-menu large-menu p-0">
-              <li @click="changeLabel(-1)" type="button" class="dropdown-item fw-bold">
-                anual
-              </li>
-              <li>
-                <div class="vue-dropdown" @click="ClicktoggleDropdown" @mouseover="toggleDropdown" @mouseout="toggleDropdown">
-                    <div class="filter-btn dropdown-item large-menu-btn d-flex btn align-items-center border-0 fw-bold" type="button">
-                        mensal  
-                      </div>
-                    <ul class="vue-dropdown-menu" v-show="dropdownState">
-                      <li class="small-menu">
-                        <div v-for="(month, index) in months" :key="index" @click="changeLabel(index + 1)" class="filter-btn fw-bold d-flex justify-content-between text-align-center align-items-center btn btn-transparent border-0" type="button">
-                            {{ month.slice(0, 3) }}
-                          </div>
-                        </li>
-                    </ul>
+  </div>
+  <div class="dropdown ms-4 d-flex" @click.stop>
+      <button class="d-flex align-items-center graph-btn btn btn-transparent px-2  fw-medium text-nowrap " @click="toggleDataType">
+        <IconsLoop class="me-1" width="20px" height="20px"/>
+        {{ currentDataTypeLabel }}
+      </button>
+      <button class="d-flex align-items-center graph-btn  btn btn-transparent px-1 fw-medium dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <IconsTimer class="me-1" width="20px" height="20px"/>
+        Período
+      </button>
+      <ul class="dropdown-menu large-menu p-0">
+        <li @click="changeLabel(-1)" type="button" class="dropdown-item fw-bold">
+          anual
+        </li>
+        <li>
+          <div class="vue-dropdown" @click="ClicktoggleDropdown" @mouseover="toggleDropdown" @mouseout="toggleDropdown">
+              <div class="filter-btn dropdown-item large-menu-btn d-flex btn align-items-center border-0 fw-bold" type="button">
+                  mensal  
                 </div>
-              </li>
-            </ul>
-            <button class="d-flex align-items-center graph-btn btn btn-transparent 91847128 px-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#almoReport2" ria-expanded="false">
-              <IconsRequest class="me-1" width="20px" height="20px"/>
-              Relatório
-            </button>
-        </div>
+              <ul class="vue-dropdown-menu" v-show="dropdownState">
+                <li class="small-menu">
+                  <div v-for="(month, index) in months" :key="index" @click="changeLabel(index + 1)" class="filter-btn fw-bold d-flex justify-content-between text-align-center align-items-center btn btn-transparent border-0" type="button">
+                      {{ month.slice(0, 3) }}
+                    </div>
+                  </li>
+              </ul>
+          </div>
+        </li>
+      </ul>
+      <button class="d-flex align-items-center graph-btn btn btn-transparent 91847128 px-1 fw-medium" type="button" data-bs-toggle="modal" data-bs-target="#almoReport2" ria-expanded="false">
+        <IconsRequest class="me-1" width="20px" height="20px"/>
+        Relatório
+      </button>
   </div>
-  <div class="me-3 fw-bold opacity-75 position-absolute ms-2">
+  <!-- <div class="me-3 fw-bold opacity-75 position-absolute ms-2">
     <p>Período: {{ monthSelected === -1 ? 'anual' : `${months[monthSelected-1]}` }}</p>
+  </div> -->
+  <div :style="{'width': isLegend ? '280px' : '0px'}" class="position-absolute d-flex align-items-center text-light legend" style="border-radius: 0px 0px 0px 7px;z-index: 0;  background-color: rgba(90, 90,90,0.8);">
+    <ul :style="{'opacity': isLegend ? '100%' : '0%'}" class="list-group ms-2" style="transition: opacity 0.6s ease-in-out;">
+      <li v-for="(label, index) in labels[currentDataType][0].slice(0, 20)" :key="index" class="list-item bg-transparent d-flex align-items-center fw-medium"><input disabled class="border p-0 me-2 my-1" style="width: 25px; height: 20px;" type="color" :value="`${backgroundColor[index]}`">  {{ label }}</li>
+    </ul>
   </div>
-  <div>
+  <div class="bg-light-emphasis py-2 mx-3 mb-4" style="border: 1px solid rgba(51,51,51,0.2); border-top: 0px; border-radius: 0px 0px 8px 8px;">
     <div class="d-flex justify-content-center z-5">
       <LoadersLoading class="position-absolute p-5 mt-5 mb-0"/>
     </div>
-    <Chart v-if="chartData.labels.length > 0" :type="'pie'" class="chart-graph" :data="chartData" :options="chartOptions"  />
+    <div class="text-start ms-2" type="button">
+      <span @click="isLegend = !isLegend" class="position-absolute btn btn-light border fw-bold text-dark-emphasis" style="font-size: 13px; z-index: 1;">Legenda</span>
+    </div>
+    <Chart v-if="chartData.labels.length > 0" :type="'pie'" class="chart-graph mt-5" :data="chartData" :options="chartOptions"  />
     <div v-else class="d-flex justify-content-center mb-5">
       <p class="fw-bold fs-5 opacity-75 py-5 mb-5">Nenhum dado encontrado</p>
     </div>
@@ -101,6 +109,13 @@ const userStore = useUser();
 const store = useStorageStore();
 const settingsStore = useSettingsStore();
 
+const backgroundColor = [
+  "#6A4C93", "#9C89B8", "#C3AED6", "#F1E3F3", "#FFB085",  // Roxos suaves e tons de laranja claro
+  "#FF8C42", "#F4A261", "#E76F51", "#E9C46A", "#264653",  // Laranjas e tons de verde e azul discretos
+  "#52796F", "#84A98C", "#CAD2C5", "#B5838D", "#6D597A",  // Verdes e violetas acinzentados, suaves
+  "#556B2F", "#8FBC8F", "#A8DADC", "#457B9D", "#1D3557"   // Verdes, azuis mais frios e suaves
+]
+const isLegend = ref(false);
 const dropdownState = ref(false);
 const toggleDropdown = () => {
   if(!store.isMobile){
@@ -249,11 +264,7 @@ const chartData = ref({
   datasets: [
     {
       label: currentLabelName,
-      backgroundColor: [
-  "#FF5733", "#C70039", "#900C3F", "#581845", "#1C1C1C",
-  "#2E4053", "#2980B9", "#76D7C4", "#239B56", "#D68910",
-  "#D35400", "#7B241C", "#F4D03F", "#A569BD", "#E74C3C"
-],
+      backgroundColor: backgroundColor,
        data: datasets[currentDataType.value+'Time'][0].slice(0, 20),
     },
   ],
@@ -262,10 +273,11 @@ const chartData = ref({
 const chartOptions = ref({
   responsive: true,
   maintainAspectRatio: false,
+  cutout: 85,
   plugins: {
     legend: {
-      display: settingsStore.isMobile ? false : true,
-      position: 'bottom',
+      display: false,
+      position: 'top',
       align: 'center',
       labels: {
         boxWidth: 15,
@@ -326,6 +338,8 @@ h5{
   border-bottom: 1px solid rgb(0, 0, 0, 0.2);
 }
 .graph-btn{
+  border-bottom: 1px solid #0B3B69;
+  border-radius: 10px 10px 0px 0px;
   color: rgb(0, 0, 0, 0.7);
   padding: 5px;
   font-size: 13px;
@@ -367,6 +381,16 @@ li{
   color: white !important;
   background-color: #1F69B1 !important;
 }
+.legend{
+  transition: width 0.8s ease-in-out;
+  overflow-y: scroll;
+  height: 389px !important;
+  padding-top: 280px;
+}
+.legend ul li{
+  font-size: 12px;
+  text-overflow: ellipsis;
+}
 .dropdown-item{
   font-size: 14px;
 }
@@ -395,14 +419,8 @@ li{
       width: 15px;
       height: 15px;
   }
-  .chart-graph{
-    height: 420px !important;
-  }
 }
 @media screen and (max-width: 706px){
-  .graph-header{
-    display: block !important;
-  }
   .graph-btn{
     font-size: 11px;
   }

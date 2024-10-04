@@ -3,11 +3,11 @@
   <div class="graph-header d-flex align-items-end justify-content-between section-title pt-2  bg-light-background-header">
         <h5 class="ps-2 fw-bold">Gráfico das solicitações de itens</h5>
           <div class="dropdown mb-1 mx-2 d-flex" @click.stop>
-            <button class="d-flex align-items-center graph-btn btn btn-transparent fw-bold px-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="d-flex align-items-center graph-btn btn btn-transparent fw-medium px-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <IconsTimer class="me-1" width="20px" height="20px"/>
               Período
             </button>
-            <button class="d-flex align-items-center ms-2 graph-btn btn btn-transparent px-2 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#almoReport1" ria-expanded="false">
+            <button class="d-flex align-items-center ms-2 graph-btn btn btn-transparent px-2 fw-medium" type="button" data-bs-toggle="modal" data-bs-target="#almoReport1" ria-expanded="false">
               <IconsRequest class="me-1" width="20px" height="20px"/>
               Relatório
             </button>

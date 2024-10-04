@@ -282,8 +282,8 @@ function checkIfMobile() {
 }
 .darkLayout li{
   color: rgb(255,255,255,0.8) !important;
-  background-color: #1A1A1A !important;
-  border: solid 1px #333333 !important;
+  background-color: #1A1A1A;
+  border: solid 1px #333333;
 }
 .darkLayout li:hover{
   background-color: #786200 !important;

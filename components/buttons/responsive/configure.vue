@@ -13,7 +13,7 @@
             </a>
             <li type="button" @click="store.isEditionMode = !store.isEditionMode" class="dropdown-item form-check d-flex py-2 mb-0 align-items-center justify-content-between">
                 <span class="me-4 pe-2 fw-medium">Habilitar edição </span>
-                <input v-model="store.isEditionMode" class="p-2  form-check-input" value="" id="editCheck" type="checkbox">
+                <input v-model="store.isEditionMode" class="p-2  form-check-input mb-1" value="" id="editCheck" type="checkbox">
             </li>
         </ul>   
     </div>  

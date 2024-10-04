@@ -127,10 +127,25 @@
       </div>
     </div>
     <div class="dashboard-section recent-records bg-light mb-4 pb-0 pt-0 rounded-3 overflow-hidden">
-      <div class="section-title pt-2  bg-light-background-header">
+      <div class="section-title pt-2 d-block d-sm-flex align-items-center justify-content-between bg-light-background-header">
         <h5 class="header ps-2  fw-bold">Movimentações mais recentes</h5>
+        <!-- <div @click.stop class="dropdown decoration-none">
+            <button class="btn btn-transparent border-0 m-0 p-0 text-dark-emphasis" data-bs-toggle="dropdown" aria-expanded="false">
+              <IconsSettingsDots class="me-1 opacity-75" width="28" height="28"/>
+            </button>
+            <ul class="dropdown-menu py-0">
+              <li @click="toggleAccounts()" type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between text-dark-emphasis">
+                <span class="fw-medium">Mostrar contas desativas</span>
+                <input type="checkbox" style="margin-bottom: 2px" class="form-check-input ms-2 border-1" v-model="showDisabledAccounts">
+              </li>
+              <li @click="showDisableActions = !showDisableActions" type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between text-dark-emphasis">
+                <span class="fw-medium">Habilitar deleção de contas</span>
+                <input type="checkbox" style="margin-bottom: 2px" class="form-check-input ms-2 border-1" v-model="showDisableActions">
+              </li>
+            </ul>
+          </div> -->
       </div>
-      <div class="dashboard-scroll">
+      <div class="dashboard-scroll" id="recentRecordsTable">
         <TablesTable v-if="records.content && records.content.length">
           <template v-slot:header>
             <tr class="col-line">
@@ -148,16 +163,16 @@
               <th class="table-cell mov-cell" scope="row">
                 <div class="d-flex table-text align-items-center " style="padding-top: 0px;">
                   <IconsPerfil class="me-3 mb-0 opacity-75" width="30px" height="30px" />
-                  {{ record.user.name }}
+                  {{ record.item.name }}
                 </div>
               </th>
               <th class="table-cell mov-cell" scope="row">
-                <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                <div style="font-size: 12px; width: 72%;"  class="ms-3 d-flex table-text align-items-end mt-1 justify-content-center text-light px-0 py-1 rounded-1 fw-bold record-operation" :class="{'bg-dark-alert': record.operation === 'EXCLUSAO', 'bg-dark-warning': record.operation === 'CONSUMO', 'bg-dark-success': record.operation === 'CADASTRO'}">
                   {{ record.operation }}
                 </div>
               </th>
               <th class="table-cell mov-cell" scope="row">
-                <div class="d-flex table-text align-items-end mt-1 justify-content-center">
+                <div class="d-flex table-text align-items-end mt-1 justify-content-center" >
                   {{ record.item.name }}
                 </div>
               </th>
@@ -200,8 +215,13 @@
     <div class="dashboard-section bg-light mb-4 pb-0 pt-0 rounded-3">
       <DashboardBarChartItems />
     </div> 
-    <div class="dashboard-section bg-light mb-4 pb-0 pt-0 rounded-3">
-      <DashboardBarChartUtils />
+    <div class="d-flex paralalel-section">
+      <div class="dashboard-section paralalel-dashboard bg-light mb-4 pb-0 pt-0 rounded-3 me-1">
+        <DashboardPizzaChartRequests />
+      </div>
+      <div class="dashboard-section paralalel-dashboard bg-light mb-4 pb-0 pt-0 rounded-3 ms-1">
+        <DashboardPizzaChartMinimum />
+      </div>
     </div>
 
     <button id="modalToggle" data-bs-toggle="modal" data-bs-target="#itemDetailing" class="disabled d-none"></button>
@@ -257,6 +277,7 @@ import { useSearch } from '../stores/search.ts';
 import { deleteUser } from '../services/users/userDELETE';
 import { usePopupStore } from '../stores/popup.ts';
 import { patchUSER } from '../services/users/userPATCH.ts';
+import { useStorageStore } from '../stores/storage.ts';
 
 const setpageTitle = inject('setpageTitle');
 const sendDataToParent = () => {
@@ -267,9 +288,8 @@ const sendDataToParent = () => {
 sendDataToParent();
 
 const userStore = useUser();
-const searchStore = useSearch();
-const route = useRouter();
 const popUpStore = usePopupStore();
+const store = useStorageStore();
 
 const BindUser = ref({
   id: null,
@@ -280,11 +300,13 @@ const showDisabledAccounts = ref(false);
 const showDisableActions = ref(false);
 
 const users = ref({ content: [], totalElements: 0}); 
-const records = ref({ content: [] });
+const records = ref({ content: [], totalElements: 0, currentPage: 0, totalPages: 0 });
+const items = ref({ content: [] }); 
+
 const requestsByStatus = ref({ totalElements: 0 });
 const acceptedRequests = ref(0);
 const rejectedRequests = ref(0);
-const items = ref({ content: [] }); 
+
 const itemsQtd = ref(0);
 
 const currentItem = ref(undefined);
@@ -332,6 +354,7 @@ const fetchRequests = async () => {
     requestsData = await getRequests(userStore, i);
   }
 }
+
 const fetchItems = async () => {
   items.value = await getItems(userStore, 0);
     for (let i = 1; i <= items.value.totalPages; i++) {
@@ -343,10 +366,17 @@ const fetchItems = async () => {
       items.value = await getItems(userStore, i);
     }
 }
+const fetchRecords = async () => {
+  const res = await getRecords(userStore, records.value.currentPage, 'id,desc');
+  records.value.content.push(...res.content);
+  records.value.totalElements = res.totalElements;
+  records.value.totalPages = res.totalPages;
+}
 const fetchData = async () => {
   try {
     fetchUsers();
-    records.value = await getRecords(userStore, 0, 'id,desc');
+    fetchRecords();
+  
     requestsByStatus.value = await getRequestByStatus(userStore, 'pendente');
     
     fetchRequests();
@@ -358,11 +388,6 @@ const fetchData = async () => {
 };
 
 
-onMounted(() => {
-  fetchData().finally(() => {
-    loadContent.value = true;
-  });
-});
 
 const showDetails = async (index, itemId) => {
   const modalToggleDom = document.getElementById('modalToggle');
@@ -378,13 +403,13 @@ const showDetails = async (index, itemId) => {
 };
 
 const patchAccountRole = async() => {
-    const res = await patchUSER(userStore, BindUser.value.email, BindUser.value.role);
-    if(res === true){
-      popUpStore.throwPopup('Encargo alterado com sucesso', 'blue');
-      fetchUsers();
-    } else if(res === false){
-      popUpStore.throwPopup('ERRO: Algum problema interno do sistema ocorreu, contate o suporte', 'red')
-    }
+  const res = await patchUSER(userStore, BindUser.value.email, BindUser.value.role);
+  if(res === true){
+    popUpStore.throwPopup('Encargo alterado com sucesso', 'blue');
+    fetchUsers();
+  } else if(res === false){
+    popUpStore.throwPopup('ERRO: Algum problema interno do sistema ocorreu, contate o suporte', 'red')
+  }
 }
 const deleteAccount = async () => {
   try {
@@ -395,6 +420,37 @@ const deleteAccount = async () => {
     popUpStore.throwPopup('ERRO: Algum problema interno do sistema ocorreu, contate o suporte', 'red');
   }
 };
+
+onMounted(() => {
+  fetchData().finally(() => {
+    loadContent.value = true;
+  });
+  
+  const recentRecords = document.getElementById('recentRecordsTable');
+  if(!store.isMobile){
+    recentRecords.addEventListener('scroll', async () => {
+      if(records.value.content.length < records.value.totalElements){
+        const isBottom = recentRecords.scrollHeight - recentRecords.scrollTop === recentRecords.clientHeight;
+        if(isBottom && records.value.currentPage < records.value.totalPages - 1){
+          records.value.currentPage++;
+          const res = await getRecords(userStore, records.value.currentPage, 'id,desc');
+          records.value.content.push(...res.content)
+        }
+      }
+    })
+  } else{
+    recentRecords.addEventListener('touchmove', async () => {
+      if(records.value.content.length < records.value.totalElements){
+        const isBottom = recentRecords.scrollTop+400 >= recentRecords.scrollHeight;
+        if(isBottom && records.value.currentPage < records.value.totalPages - 1 && records.value.currentPage < 10){
+          records.value.currentPage++;
+          const res = await getRecords(userStore, records.value.currentPage, 'id,desc');
+          records.value.content.push(...res.content);
+        }
+      }
+    })
+  }
+});
 </script>
 
 <style scoped>
@@ -444,6 +500,9 @@ h5{
 }
 .dropdown-item span{
   font-size: 13px;
+}
+.paralalel-dashboard{
+  width: 50%;
 }
 .summary-text{
   width: 50%;
@@ -501,18 +560,6 @@ h5{
 }
 .user-disabled{
   background-color: rgb(229, 57, 53, 0.3) !important;
-}
-.bg-warning-op80{
-    opacity: 80%;
-    background-color: rgba(254, 213, 30);
-}
-.bg-alert-op80{
-  opacity: 80%;
-  background-color: rgb(231, 15, 15);
-}
-.bg-secondary-op80{
-    opacity: 80%;
-    background-color: #0052a4;
 }
 .warning-box{
     border: solid 1px rgba(0, 0, 0, 0.3);
@@ -577,12 +624,24 @@ h5{
   .dashboard-section{
     margin-right: 0 !important;
   }
+  .paralalel-dashboard{
+    width: 100%;
+  }
 }
 @media screen and (max-width: 812px){
+  .dashboard-scroll{
+    max-height: 227px !important;
+  }
   .dashboard-container{
     display: block !important;
   }
-}   
+}
+@media screen and (max-width: 600px){
+    .record-operation{
+        font-size: 10px;
+        padding: 7px 4px 7px 4px !important;
+    }
+}    
 @media screen and (max-width: 400px){
   .summary-text{
     font-size: 14px;

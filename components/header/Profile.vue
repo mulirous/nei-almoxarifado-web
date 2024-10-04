@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex profile align-items-center me-3">
-          <div class="me-2 nav-item dropdown">
+          <div class="me-2  nav-item dropdown">
             <button  class="svg-button bg-primary px-0 pb-1" data-bs-toggle="dropdown" data-bs-offset="20,1" aria-expanded="false" title="Notificações">
               <IconsBell with="16px" height="16px"/>
               <span v-if="requests.length > 0" class="position-absolute start-100 translate-middle badge rounded-pill bg-danger">
