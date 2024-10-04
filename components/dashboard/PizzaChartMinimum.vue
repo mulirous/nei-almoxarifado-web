@@ -3,9 +3,9 @@
     <h5 class="ps-2 fw-bold">Distribuição de níveis dos itens </h5>  
   </div>
   <div class="ms-4 d-flex">
-    <button class="btn btn-transparent graph-btn fw-medium">Teste</button>
+    <button class="btn btn-transparent graph-btn fw-medium d-flex align-items-center"><IconsOpenEye class="me-1" width="25px" height="20px"/>Ver itens</button>
   </div>
-  <div :style="{'width': isLegend ? '120px' : '0px'}" class="position-absolute d-flex align-items-center text-light legend" style="border-radius: 0px 0px 0px 7px;z-index: 0; height: 388px; background-color: rgba(90, 90,90,0.8);">
+  <div :style="{'width': isLegend ? '120px' : '0px'}" class="position-absolute d-flex text-light legend" style="border-radius: 0px 0px 0px 7px;z-index: 0; height: 388px; background-color: rgba(90, 90,90,0.8);">
     <ul :style="{'opacity': isLegend ? '100%' : '0%'}" class="list-group ms-2" style="transition: opacity 0.4s ease-in-out;">
       <li v-for="(name, index) in legend" :key="index" class="list-item bg-transparent d-flex align-items-center fw-medium"><input disabled class="border p-0 me-2 my-1" style="width: 25px; height: 20px;" type="color" :value="`${backgroundColor[index]}`">  {{ name }}</li>
     </ul>
@@ -66,7 +66,7 @@ const store = useStorageStore();
 const settingsStore = useSettingsStore();
 
 const isLegend = ref(false);  
-const legend = ['Estável', 'Alerta', 'Crítica']
+const legend = ['Estável', 'Alerta', 'Crítico']
 const backgroundColor = [ "#1f69b1", "#FED51E", "#B71C1C"]
 const itemsStateLevels = ref({
   stable: 0,
@@ -164,6 +164,10 @@ li{
 }
 .legend{
   transition: width 0.8s ease-in-out;
+}
+.legend ul li{
+  font-size: 12px;
+  text-overflow: ellipsis;
 }
 .action-btn{
     border: none;

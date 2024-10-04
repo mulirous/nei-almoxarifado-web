@@ -46,12 +46,14 @@
         Relatório
       </button>
   </div>
-  <!-- <div class="me-3 fw-bold opacity-75 position-absolute ms-2">
-    <p>Período: {{ monthSelected === -1 ? 'anual' : `${months[monthSelected-1]}` }}</p>
-  </div> -->
+  <div class="d-flex justify-content-end">
+    <div class="me-3 fw-bold opacity-75 position-absolute me-4" style="margin-top: 8px;">
+      <p class="btn btn-light border fw-bold disabled" style="font-size: 13px">Período: {{ monthSelected === -1 ? 'anual' : `${months[monthSelected-1]}` }}</p>
+    </div> 
+  </div>
   <div :style="{'width': isLegend ? '280px' : '0px'}" class="position-absolute d-flex align-items-center text-light legend" style="border-radius: 0px 0px 0px 7px;z-index: 0;  background-color: rgba(90, 90,90,0.8);">
     <ul :style="{'opacity': isLegend ? '100%' : '0%'}" class="list-group ms-2" style="transition: opacity 0.6s ease-in-out;">
-      <li v-for="(label, index) in labels[currentDataType][0].slice(0, 20)" :key="index" class="list-item bg-transparent d-flex align-items-center fw-medium"><input disabled class="border p-0 me-2 my-1" style="width: 25px; height: 20px;" type="color" :value="`${backgroundColor[index]}`">  {{ label }}</li>
+      <li v-for="(label, index) in labels[currentDataType][0].slice(0, 20)" :key="index" class="list-item bg-transparent d-flex align-items-center fw-medium text-nowrap"><input disabled class="border p-0 me-2 my-1" style="width: 25px; height: 20px;" type="color" :value="`${backgroundColor[index]}`">  {{ label }}</li>
     </ul>
   </div>
   <div class="bg-light-emphasis py-2 mx-3 mb-4" style="border: 1px solid rgba(51,51,51,0.2); border-top: 0px; border-radius: 0px 0px 8px 8px;">
@@ -110,10 +112,10 @@ const store = useStorageStore();
 const settingsStore = useSettingsStore();
 
 const backgroundColor = [
-  "#6A4C93", "#9C89B8", "#C3AED6", "#F1E3F3", "#FFB085",  // Roxos suaves e tons de laranja claro
-  "#FF8C42", "#F4A261", "#E76F51", "#E9C46A", "#264653",  // Laranjas e tons de verde e azul discretos
-  "#52796F", "#84A98C", "#CAD2C5", "#B5838D", "#6D597A",  // Verdes e violetas acinzentados, suaves
-  "#556B2F", "#8FBC8F", "#A8DADC", "#457B9D", "#1D3557"   // Verdes, azuis mais frios e suaves
+  "#0B3B69", "#9C89B8", "#C3AED6", "#1f69b1", "#FFB085",  // Roxos suaves e tons de laranja claro
+  "#339e38", "#F4A261", "#E76F51", "#E9C46A", "#264653",  // Laranjas e tons de verde e azul discretos
+  "#B71C1C", "#84A98C", "#CAD2C5", "#B5838D", "#6D597A",  // Verdes e violetas acinzentados, suaves
+  "#FED51E", "#8FBC8F", "#A8DADC", "#457B9D", "#1D3557"   // Verdes, azuis mais frios e suaves
 ]
 const isLegend = ref(false);
 const dropdownState = ref(false);
